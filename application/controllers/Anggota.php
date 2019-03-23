@@ -1,0 +1,208 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Anggota extends CI_Controller {
+
+	/**
+	 * Index Page for this controller.
+	 *
+	 * Maps to the following URL
+	 * 		http://example.com/index.php/welcome
+	 *	- or -
+	 * 		http://example.com/index.php/welcome/index
+	 *	- or -
+	 * Since this controller is set as the default controller in
+	 * config/routes.php, it's displayed at http://example.com/
+	 *
+	 * So any other public methods not prefixed with an underscore will
+	 * map to /index.php/welcome/<method_name>
+	 * @see https://codeigniter.com/user_guide/general/urls.html
+	 */
+	public function index()
+	{
+		$this->load->model('Model_anggota');
+		$data = array(
+			'halaman' => 'data_anggota_aktif',
+			'anggota'=> $this->Model_anggota->get_data_anggota()
+		);
+
+		$this->load->view('templates/header', $data);
+		$this->load->view('data_anggota', $data);
+		$this->load->view('templates/footer');
+	}
+
+	public function nonaktif(){
+		$this->load->model('Model_anggota');
+		$data = array(
+			'halaman' => 'data_anggota_non_aktif',
+			'anggota'=> $this->Model_anggota->get_data_anggota_non_aktif()
+		);
+		$this->load->view('templates/header', $data);
+		$this->load->view('data_anggota_non_aktif', $data);
+		$this->load->view('templates/footer');
+	}
+
+	public function data($id_anggota)
+	{
+		$this->load->model('Model_anggota');
+		$data = array(
+			'halaman' => 'data_anggota_aktif',
+			'anggota'=> $this->Model_anggota->get_data_anggota($id_anggota)
+		);
+		//$data['sisa_pembia']
+		$data['total_iuran_wajib']=$this->Model_anggota->get_total_iuran_wajib($id_anggota);
+		//$data['pembiayaan'] = $this->Model_anggota->
+		//$data['sisa_pembiayaan']=$this->Model_anggota->get_sisa_pembiayaan($id_anggota);
+		$pembiayaan = $this->Model_anggota->get_sisa_pembiayaan($id_anggota);
+		$angsuran = $this->Model_anggota->get_total_angsuran($id_anggota);
+		$data['sisa_pembiayaan'] = $pembiayaan['jumlah']-$angsuran['total_angsuran'];
+		//echo $data['sisa_pembiayaan'];
+		//exit();
+		$data['total_angsuran'] = $angsuran['total_angsuran'];
+		$data['pembiayaan'] = $this->Model_anggota->get_id_pembiayaan($id_anggota);
+		$this->load->view('templates/header', $data);
+		$this->load->view('data_individu', $data);
+		$this->load->view('templates/footer');
+	}
+
+
+	public function data_angsuran($id_pembiayaan)
+	{
+		$this->load->model('Model_anggota');
+		$data = array(
+			'halaman' => 'data_angsuran',
+			'angsuran'=> $this->Model_anggota->get_data_angsuran($id_pembiayaan)
+		);
+		//$data['sisa_pembia']
+		//$data['total_angsuran']=$this->Model_anggota->get_total_angsuran($id_anggota);
+		//$data['sisa_pembiayaan']=$this->Model_anggota->get_sisa_pembiayaan($id_anggota);
+		//echo $data['sisa_pembiayaan'];
+		//exit();
+		$data['pembiayaan'] = $this->Model_anggota->get_jumlah_pembiayaan($id_pembiayaan);
+
+		$this->load->view('templates/header', $data);
+		$this->load->view('data_angsuran', $data);
+		$this->load->view('templates/footer');
+	}
+
+	public function tambah_anggota(){
+		$data = array(
+			'halaman' => 'tambah_anggota'
+		);
+
+		$this->db->select('*');
+		$this->db->from('anggota');
+		//$this->db->where('iuran_wajib.id_anggota', $id_anggota);
+		//$this->db->join('anggota', 'iuran_wajib.id_anggota = anggota.id_anggota');
+		$this->db->limit(1);
+		$this->db->order_by('id_anggota', 'DESC');
+		$data['anggota'] = $this->db->get()->row_array();
+		$data['anggota']['id_anggota'] += 1;
+		
+		$this->load->view('templates/header', $data);
+		$this->load->view('tambah_anggota');
+		$this->load->view('templates/footer');
+
+	}
+
+	public function edit_anggota($id_anggota){
+		$this->load->model('Model_anggota');
+		
+		$data = array(
+			'halaman' => 'data_anggota',
+			'anggota'=> $this->Model_anggota->get_edit_anggota($id_anggota)
+		);
+		$this->load->view('templates/header', $data);
+		$this->load->view('edit_anggota', $data);
+		$this->load->view('templates/footer');
+	}
+	
+	public function iuran_pokok($id_anggota=null){
+		$this->load->model('Model_anggota');
+		
+		$data = array(
+			'halaman' => 'iuran_pokok',
+			'iuran_pokok' => $this->Model_anggota->get_data_anggota($id_anggota)
+		);
+		if($id_anggota==null){
+			$this->load->view('templates/header', $data);
+			$this->load->view('iuran_pokok', $data);
+			$this->load->view('templates/footer');
+
+		}
+		else{
+			$this->load->view('templates/header', $data);
+			$this->load->view('iuran_pokok_individu', $data);
+			$this->load->view('templates/footer');
+		}
+	}
+
+	
+	public function iuran_wajib($id_anggota=null){
+		$this->load->model('Model_anggota');
+		
+		$data = array(
+			'halaman' => 'iuran_wajib',
+			'iuran_wajib'=>$this->Model_anggota->get_iuran_wajib($id_anggota)
+		);
+
+		//print_r($data['iuran_wajib']);
+		//exit();
+
+		$this->load->view('templates/header', $data);
+		$this->load->view('iuran_wajib', $data);
+		$this->load->view('templates/footer');
+
+	}
+	
+	public function pembiayaan($id_anggota=null){
+		$this->load->model('Model_anggota');
+		$data = array(
+			'halaman' => 'pembiayaan',
+			'pembiayaan'=>$this->Model_anggota->get_pembiayaan($id_anggota)
+		);
+
+		//print_r($data['iuran_wajib']);
+		//exit();
+
+		$this->load->view('templates/header', $data);
+		$this->load->view('data_pembiayaan', $data);
+		$this->load->view('templates/footer');
+
+	}
+	
+
+
+	public function tambah_iuran_wajib(){
+		$data = array(
+			'halaman' => 'tambah_iuran_wajib'
+		);
+
+		$this->load->view('templates/header', $data);
+		$this->load->view('tambah_iuran_wajib');
+		$this->load->view('templates/footer');
+
+	}
+
+	public function tambah_pembiayaan(){
+		$data = array(
+			'halaman' => 'tambah_pembiayaan'
+		);
+
+		$this->load->view('templates/header', $data);
+		$this->load->view('tambah_pembiayaan', $data);
+		$this->load->view('templates/footer');
+
+	}
+	public function tambah_angsuran(){
+		$data = array(
+			'halaman' => 'tambah_angsuran'
+		);
+
+		$this->load->view('templates/header', $data);
+		$this->load->view('tambah_angsuran', $data);
+		$this->load->view('templates/footer');
+
+	}
+
+}
