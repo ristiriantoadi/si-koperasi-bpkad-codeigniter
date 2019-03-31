@@ -40,8 +40,10 @@ class Proses extends CI_Controller {
 
 	public function tambah_angsuran(){
 		$this->load->model('Model_anggota');
+		
 		if($this->Model_anggota->tambah_angsuran()){
-			redirect(site_url('anggota/pembiayaan'));
+			if($this->Model_anggota->tambah_ijarah())
+				redirect(site_url('anggota/pembiayaan'));
 		}else echo "gagal";
 	}
 
@@ -200,6 +202,67 @@ class Proses extends CI_Controller {
 			return $text;
 	}
 
+	public function cari_iuran_pokok($cari=null){
+		$this->load->model('Model_anggota');
+		//echo $this->input->post('anggota');
+		//if($cari==null)
+			//$data=$this->Model_anggota->get_data_anggota($cari)
+		//else 
+		$data = $this->Model_anggota->cari_iuran_pokok($cari);
+		$text="";
+		$count=0;  	
+		foreach ($data as $data_iuran_pokok):
+
+				$text.='<tr>
+              		<td>'.($count+1).'</td>
+                  <td>'.$data_iuran_pokok['nama'].'</td>
+                  <td>'.$data_iuran_pokok['tanggal'].'</td>
+                  <td class="uang">'.$data_iuran_pokok['iuran_pokok'].'</td>
+                  
+								</tr>';
+				$count++;
+			endforeach;
+			$count = $count*200000;
+			$text.='<tr>
+								<td colspan="3"><b>Total Jumlah</b></td>
+								<td class="uang">'.$count.'</td>
+							</tr>';
+			echo $text;
+			//exit();
+			return $text;
+	}
+
+	public function cari_data_ijarah($cari=null){
+		$this->load->model('Model_anggota');
+		//echo $this->input->post('anggota');
+		//if($cari==null)
+			//$data=$this->Model_anggota->get_data_anggota($cari)
+		//else 
+		$data = $this->Model_anggota->cari_ijarah($cari);
+		$total_ijarah = $this->Model_anggota->get_total_ijarah_by_keyword($cari);
+		$text="";
+		$count=0;  	
+		foreach ($data as $data_ijarah):
+				$count++;
+				$text.='<tr>
+              		<td>'.($count).'</td>
+                  <td>'.$data_ijarah['nama'].'</td>
+                  <td>'.$data_ijarah['tanggal'].'</td>
+                  <td class="uang">'.$data_ijarah['jumlah'].'</td>
+                  
+								</tr>';
+				//$count++;
+			endforeach;
+			//$count = $count*200000;
+			$text.='<tr>
+								<td colspan="3"><b>Total Jumlah</b></td>
+								<td class="uang">'.$total_ijarah.'</td>
+							</tr>';
+			echo $text;
+			//exit();
+			return $text;
+	}
+
 	public function hapus_iuran_wajib($id_anggota){
 		$this->load->model('Model_anggota');
 		//echo $this->input->post('anggota');
@@ -209,9 +272,9 @@ class Proses extends CI_Controller {
 			$text="";
 		$count=0;  	
 		foreach ($data as $data_iuran):
-
+				$count++;
 				$text.='<tr>
-              		<td>'.$data_iuran['id_iuran_wajib'].'</td>
+              		<td>'.($count).'</td>
                   <td>'.$data_iuran['nama'].'</td>
                   <td>'.$data_iuran['tanggal_transaksi'].'</td>
                   <td>Rp. 200.000</td>
@@ -222,7 +285,7 @@ class Proses extends CI_Controller {
                             </div>
                           </td>
 								</tr>';
-				$count++;
+				//$count++;
 			endforeach;
 			$count = $count*200000;
 			$text.='<tr>

@@ -32,11 +32,12 @@
 
     $(document.body).delegate('.hapus-iuran-wajib', 'click', function(){
       console.log(this.id);
-      
-      $.ajax({url: "<?php echo site_url('proses/hapus_iuran_wajib/')?>"+this.id, success: function(result){
-        $("#table-body").html(result);
-        $(".uang").html(formatUang($(".uang").html()));
-      }});
+      if(confirm("Anda yakin ingin menghapus data iuran wajib?")){
+        $.ajax({url: "<?php echo site_url('proses/hapus_iuran_wajib/')?>"+this.id, success: function(result){
+          $("#table-body").html(result);
+          $(".uang").html(formatUang($(".uang").html()));
+        }});
+      }
     });
 
     $("#search-aktif").keyup(function(){
@@ -57,6 +58,31 @@
       $.ajax({url: "<?php echo site_url('proses/cari_iuran_wajib/')?>"+keyword, success: function(result){
         $("#table-body").html(result);
         $(".uang").html(formatUang($(".uang").html()));
+      }});
+    }); 
+
+    $("#search-iuran-pokok").keyup(function(){
+      //$("input").css("background-color", "pink");
+      //console.log(this.value);
+      var keyword = convertToURL(this.value);
+      console.log(keyword);
+      $.ajax({url: "<?php echo site_url('proses/cari_iuran_pokok/')?>"+keyword, success: function(result){
+        $("#table-body").html(result);
+        $(".uang").html(formatUang($(".uang").html()));
+      }});
+    }); 
+
+    $("#search-ijarah").keyup(function(){
+      //$("input").css("background-color", "pink");
+      //console.log(this.value);
+      var keyword = convertToURL(this.value);
+      console.log(keyword);
+      $.ajax({url: "<?php echo site_url('proses/cari_data_ijarah/')?>"+keyword, success: function(result){
+        $("#table-body").html(result);
+        //$(".uang").html(formatUang($(".uang").html()));
+        $(".uang").each(function(index, value){
+            $(this).html(formatUang($(this).html()));
+        })
       }});
     }); 
 

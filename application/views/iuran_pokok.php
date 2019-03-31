@@ -23,7 +23,7 @@
               <div class="row">
                 <div class="form-group ">
                   <div class="pull-right col-sm-3 ">
-                    <input type="text" class="form-control" id="search-iuran-wajib" placeholder="Cari berdasarkan nama" name="no_telepon">
+                    <input type="text" class="form-control" id="search-iuran-pokok" placeholder="Cari berdasarkan nama" name="no_telepon">
                   </div>
                   
                 </div>
@@ -48,7 +48,7 @@
                           <td><?php echo $count+1 ?></td>
                           <td><?php echo $data_iuran['nama']?></td>
                           <td><?php echo $data_iuran['tanggal']?></td>
-                          <td><?php echo "Rp. 500.000"?></td>
+                          <td class="uang"><?php echo $data_iuran['iuran_pokok']?></td>
                           
                         </tr>
                     <?php 

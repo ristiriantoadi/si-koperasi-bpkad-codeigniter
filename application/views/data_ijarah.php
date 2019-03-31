@@ -3,7 +3,7 @@
 <div class="content-wrapper" style="background-color:white">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>Data Iuran Pokok</h1>
+      <h1>Data Ijarah</h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
         <li class="active">Here</li>
@@ -23,7 +23,7 @@
               <div class="row">
                 <div class="form-group ">
                   <div class="pull-right col-sm-3 ">
-                    <input type="text" class="form-control" id="search-iuran-wajib" placeholder="Cari berdasarkan nama" name="no_telepon">
+                    <input type="text" class="form-control" id="search-ijarah" placeholder="Cari berdasarkan nama" name="no_telepon">
                   </div>
                   
                 </div>
@@ -41,15 +41,22 @@
                     </tr>
                   </thead>
                   <tbody id="table-body">
+                    <?php 
+                      $count=0;  
+                      foreach ($ijarah as $data_ijarah): ?>
                         <tr>
-                          <td><?php echo $iuran_pokok['id_anggota'] ?></td>
-                          <td><?php echo $iuran_pokok['nama']?></td>
-                          <td><?php echo $iuran_pokok['tanggal']?></td>
-                          <td><?php echo "Rp. 500.000"?></td>
+                          <td><?php echo $count+1 ?></td>
+                          <td><?php echo $data_ijarah['nama']?></td>
+                          <td><?php echo $data_ijarah['tanggal']?></td>
+                          <td class="uang"><?php echo $data_ijarah['jumlah']?></td>
+                          
                         </tr>
+                    <?php 
+                      $count++;
+                      endforeach; ?>
                     <tr>
                       <td colspan="3"><b>Total Jumlah</b></td>
-                      <td class="uang">500000</td>
+                      <td class="uang"><?php echo $total_ijarah ?></td>
                     </tr> 
                   </tbody>
                 </table>

@@ -174,7 +174,8 @@ desired effect
         <li class="<?php echo ($halaman == 'data_anggota_aktif' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota') ?>"><i class="fa fa-fw fa-users"></i><span>Data Anggota Aktif</span></a></li>
         <li class="<?php echo ($halaman == 'data_anggota_non_aktif' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/nonaktif') ?>"><i class="fa fa-fw fa-users"></i><span>Data Anggota Nonaktif</span></a></li> 
         <li class="<?php echo ($halaman == 'iuran_wajib' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/iuran_wajib') ?>"><i class="fa fa-fw fa-money"></i><span>Iuran Wajib</span></a></li> 
-        <li class="<?php echo ($halaman == 'iuran_pokok' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/iuran_pokok') ?>"><i class="fa fa-fw fa-dollar"></i><span>Iuran Pokok</span></a></li> 
+        <li class="<?php echo ($halaman == 'iuran_pokok' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/iuran_pokok') ?>"><i class="fa fa-fw fa-dollar"></i><span>Iuran Pokok</span></a></li>
+        <li class="<?php echo ($halaman == 'ijarah' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/ijarah') ?>"><i class="fa fa-fw fa-money"></i><span>Ijarah</span></a></li> 
         <li class="<?php echo ($halaman == 'pembiayaan' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/pembiayaan') ?>"><i class="fa fa-fw fa-credit-card"></i><span>Pembiayaan</span></a></li> 
         <li class="<?php echo ($halaman == 'tambah_anggota' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/tambah_anggota') ?>"><i class="fa fa-fw fa-user-plus"></i><span>Tambah Anggota</span></a></li>
         <li class="<?php echo ($halaman == 'tambah_iuran_wajib' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/tambah_iuran_wajib') ?>"><i class="fa fa-fw fa-user-plus"></i><span>Tambah Iuran Wajib</span></a></li>

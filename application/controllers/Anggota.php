@@ -122,8 +122,9 @@ class Anggota extends CI_Controller {
 		
 		$data = array(
 			'halaman' => 'iuran_pokok',
-			'iuran_pokok' => $this->Model_anggota->get_data_anggota($id_anggota)
+			'iuran_pokok' => $this->Model_anggota->get_data_iuran_pokok($id_anggota)
 		);
+		/*
 		if($id_anggota==null){
 			$this->load->view('templates/header', $data);
 			$this->load->view('iuran_pokok', $data);
@@ -135,6 +136,12 @@ class Anggota extends CI_Controller {
 			$this->load->view('iuran_pokok_individu', $data);
 			$this->load->view('templates/footer');
 		}
+		*/
+			$this->load->view('templates/header', $data);
+			$this->load->view('iuran_pokok', $data);
+			$this->load->view('templates/footer');
+
+
 	}
 
 	
@@ -151,6 +158,24 @@ class Anggota extends CI_Controller {
 
 		$this->load->view('templates/header', $data);
 		$this->load->view('iuran_wajib', $data);
+		$this->load->view('templates/footer');
+
+	}
+
+	public function ijarah($id_anggota=null){
+		$this->load->model('Model_anggota');
+		
+		$data = array(
+			'halaman' => 'ijarah',
+			'ijarah'=>$this->Model_anggota->get_ijarah($id_anggota),
+			'total_ijarah' =>$this->Model_anggota->get_total_ijarah($id_anggota)
+		);
+
+		//print_r($data['iuran_wajib']);
+		//exit();
+
+		$this->load->view('templates/header', $data);
+		$this->load->view('data_ijarah', $data);
 		$this->load->view('templates/footer');
 
 	}
