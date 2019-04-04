@@ -60,13 +60,9 @@
                 <label class="control-label col-sm-3" for="bidang">Bidang:</label>
                 <div class="col-sm-9">
                   <select class="form-control" name="bidang" id="bidang">
-                    <option value="Sekretariat" <?php echo($anggota['bidang'] == 'Sekretariat' ? 'selected':'') ?> >Sekretariat</option>
-                    <option value="Anggaran" <?php echo($anggota['bidang'] == 'Anggaran' ? 'selected':'') ?>>Anggaran</option>
-                    <option value="Pembendaharaan" <?php echo($anggota['bidang'] == 'Pembendaharaan' ? 'selected':'') ?>>Pembendaharaan</option>
-                    <option value="Akuntansi" <?php echo($anggota['bidang'] == 'Akuntansi' ? 'selected':'') ?>>Akuntansi</option>
-                    <option value="BUD" <?php echo($anggota['bidang'] == 'BUD' ? 'selected':'') ?>>BUD</option>
-                    <option value="UPT Pemanfaatan Aset" <?php echo($anggota['bidang'] == 'UPT Pemanfaatan Aset' ? 'selected':'') ?>>UPT Pemanfaatan Aset</option>
-                    <option value="UPT Islamic Center" <?php echo($anggota['bidang'] == 'UPT Islamic Center' ? 'selected':'') ?>>UPT Islamic Center</option>
+                    <?php foreach($bidang as $data_bidang):?>
+                      <option value="<?php echo $data_bidang['nama_bidang'] ?>" <?php echo($anggota['bidang'] == $data_bidang['nama_bidang'] ? 'selected':'') ?> ><?php echo $data_bidang['nama_bidang'] ?></option>
+                    <?php endforeach; ?>      
                   </select>
                 </div>
               </div>

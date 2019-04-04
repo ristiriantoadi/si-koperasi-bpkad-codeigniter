@@ -65,6 +65,19 @@ class Anggota extends CI_Controller {
 		$this->load->view('templates/footer');
 	}
 
+	public function data_bidang()
+	{
+		$this->load->model('Model_anggota');
+		$data = array(
+			'halaman' => 'data_bidang',
+			'bidang'=> $this->Model_anggota->get_data_bidang()
+		);
+		$this->load->view('templates/header', $data);
+		$this->load->view('edit_data_bidang', $data);
+		$this->load->view('templates/footer');
+	}
+
+
 
 	public function data_angsuran($id_pembiayaan)
 	{
@@ -86,8 +99,11 @@ class Anggota extends CI_Controller {
 	}
 
 	public function tambah_anggota(){
+		$this->load->model('Model_anggota');
+		
 		$data = array(
-			'halaman' => 'tambah_anggota'
+			'halaman' => 'tambah_anggota',
+			'bidang'=> $this->Model_anggota->get_data_bidang()
 		);
 
 		$this->db->select('*');
@@ -110,7 +126,8 @@ class Anggota extends CI_Controller {
 		
 		$data = array(
 			'halaman' => 'data_anggota',
-			'anggota'=> $this->Model_anggota->get_edit_anggota($id_anggota)
+			'anggota'=> $this->Model_anggota->get_edit_anggota($id_anggota),
+			'bidang' => $this->Model_anggota->get_data_bidang()
 		);
 		$this->load->view('templates/header', $data);
 		$this->load->view('edit_anggota', $data);

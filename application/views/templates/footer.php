@@ -25,9 +25,11 @@
     console.log("ababa");
     $(document.body).delegate('.hapus', 'click', function(){
       console.log(this.id);
-      $.ajax({url: "<?php echo site_url('proses/nonaktifkan_anggota/')?>"+this.id, success: function(result){
-        $("#table-body").html(result);
-      }});
+      if(confirm("Anda yakin ingin menonaktifkan?")){
+        $.ajax({url: "<?php echo site_url('proses/nonaktifkan_anggota/')?>"+this.id, success: function(result){
+          $("#table-body").html(result);
+        }});
+      }
     });
 
     $(document.body).delegate('.hapus-iuran-wajib', 'click', function(){
@@ -40,12 +42,49 @@
       }
     });
 
+    $(document.body).delegate('.hapus-pembiayaan', 'click', function(){
+      console.log(this.id);
+      if(confirm("Anda yakin ingin menghapus data pembiayaan?")){
+        $.ajax({url: "<?php echo site_url('proses/hapus_pembiayaan/')?>"+this.id, success: function(result){
+          $("#table-body").html(result);
+          //$(".uang").html(formatUang($(".uang").html()));
+          $(".uang").each(function(index, value){
+          $(this).html(formatUang($(this).html()));
+         })
+        }});
+      }
+    });
+
     $("#search-aktif").keyup(function(){
       //$("input").css("background-color", "pink");
       //console.log(this.value);
       var keyword = convertToURL(this.value);
       console.log(keyword);
       $.ajax({url: "<?php echo site_url('proses/cari_anggota_aktif/')?>"+keyword, success: function(result){
+        $("#table-body").html(result);
+      }});
+    });
+
+    $("#search-pembiayaan").keyup(function(){
+      //$("input").css("background-color", "pink");
+      //console.log(this.value);
+      var keyword = convertToURL(this.value);
+      console.log(keyword);
+      $.ajax({url: "<?php echo site_url('proses/cari_pembiayaan/')?>"+keyword, success: function(result){
+        $("#table-body").html(result);
+        $(".uang").each(function(index, value){
+          $(this).html(formatUang($(this).html()));
+         })
+      }});
+    });
+
+    
+    $("#search-non-aktif").keyup(function(){
+      //$("input").css("background-color", "pink");
+      //console.log(this.value);
+      var keyword = convertToURL(this.value);
+      console.log(keyword);
+      $.ajax({url: "<?php echo site_url('proses/cari_anggota_nonaktif/')?>"+keyword, success: function(result){
         $("#table-body").html(result);
       }});
     }); 
@@ -91,6 +130,16 @@
       var keyword = convertToURL(this.value);
       //document.getElementById("nama").value=this.value;
       $.ajax({url: "<?php echo site_url('proses/cari_anggota_iuran/')?>"+keyword, success: function(result){
+        $("#anggota").html(result);
+        //$(".uang").html(formatUang($(".uang").html()));
+      }});
+    });
+
+    $("#id-anggota-pembiayaan").keyup(function(){
+      //console.log("abababa");(
+      var keyword = convertToURL(this.value);
+      //document.getElementById("nama").value=this.value;
+      $.ajax({url: "<?php echo site_url('proses/cari_anggota_boleh_mendapat_pembiayaan/')?>"+keyword, success: function(result){
         $("#anggota").html(result);
         //$(".uang").html(formatUang($(".uang").html()));
       }});
@@ -179,7 +228,31 @@
     });
     
 
+    
+    $("#id-anggota-pembiayaan").change(function(){
+      //$("input").css("background-color", "pink");
+      //console.log(this.value);
+      console.log("something");
+      //$("#nama").val="abababab";
+      var id=this.value.split(" ")[0];
+      var nama=this.value.split(' ').slice(1).join(' ');
+      //console.log("Keyword "+keyword);
+      //console.log("Keyword 1"+keyword1);
+      /*
+      $.ajax({url: "<?php echo site_url('proses/cari_nama_anggota/')?>"+keyword, success: function(result){
+        //$("#anggota").html(result);
+        document.getElementById("nama").value=result;
+      }});
+      */
+      //console.log(keyword);
+      $("#id-anggota-pembiayaan").val(id);
+      $("#nama").val(nama);
+      console.log(id);
+      console.log(nama);
 
+      $('#anggota').empty();
+      
+    });
 
     $("#id-anggota").change(function(){
       //$("input").css("background-color", "pink");
@@ -196,13 +269,25 @@
       this.value=keyword;
       $('#anggota').empty();
       
-      
     }); 
     
     $("#angsuran").keyup(function(){
-      $("#angsuran").val(formatUangNoCurrency($("#angsuran").val().split('.').join('')));
+      //$("#angsuran").val(formatUangNoCurrency($("#angsuran").val().split('.').join('')));
+      $("#angsuran").val($("#angsuran").val().split('.').join('')); 
+      $("#ijarah").val($("#ijarah").val().split('.').join('')); 
+     
+      var angsuran = parseInt($("#angsuran").val());
+      var ijarah = parseInt($("#ijarah").val());
+      
+      var total_angsuran = angsuran+ijarah;
+      $("#total-angsuran").val(formatUangNoCurrency(total_angsuran));
+      
+      $("#angsuran").val(formatUangNoCurrency(angsuran));
+      $("#ijarah").val(formatUangNoCurrency(ijarah));
+
     });  
 
+    /*
     $('#angsuran').change(function(){
       $("#angsuran").val($("#angsuran").val().split('.').join('')); 
       $("#ijarah").val($("#ijarah").val().split('.').join('')); 
@@ -217,6 +302,7 @@
       $("#ijarah").val(formatUangNoCurrency(ijarah));
 
     })
+    */
 
     $("#id-anggota-angsuran").change(function(){
       //$("input").css("background-color", "pink");

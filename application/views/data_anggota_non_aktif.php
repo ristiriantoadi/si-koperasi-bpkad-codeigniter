@@ -23,7 +23,7 @@
               <div class="row">
                 <div class="form-group ">
                   <div class="pull-right col-sm-3 ">
-                    <input type="text" class="form-control" id="search" placeholder="Cari berdasarkan nama atau id" name="no_telepon">
+                    <input type="text" class="form-control" id="search-non-aktif" placeholder="Cari berdasarkan nama atau id" name="no_telepon">
                   </div>
                   
                 </div>

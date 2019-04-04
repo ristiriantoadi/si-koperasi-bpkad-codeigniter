@@ -23,7 +23,7 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-3" for="id_anggota">Id Anggota:</label>
                                 <div class="col-sm-9">
-                                    <input list="anggota" name="id_anggota" placeholder="Isi id anggota" id="id-anggota" value=""  class="form-control">
+                                    <input list="anggota" name="id_anggota" placeholder="Isi id anggota" id="id-anggota-pembiayaan" value=""  class="form-control">
                                     <datalist id="anggota">
                                     </datalist>
                                 </div>
@@ -61,7 +61,7 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-3" for="jumlah">Bagi Hasil(%):</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="bagi-hasil" name="bagi_hasil" value="1">
+                                    <input type="number" class="form-control" id="bagi-hasil" name="bagi_hasil" value="1">
                                 </div>
                             </div>
                             <div class="form-group">

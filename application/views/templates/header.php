@@ -43,6 +43,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     .belum-lunas{
       color:red;
+      font-weight: bold;
+    }
+
+    
+    .lunas{
+      color:green;
+      font-weight: bold;
     }
     
     .form-control{
@@ -171,6 +178,7 @@ desired effect
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">SIMPAN PINJAM</li>
         <!-- Optionally, you can add icons to the links -->
+        <li class="<?php echo ($halaman == 'data_bidang' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/data_bidang') ?>"><i class="fa fa-fw fa-users"></i><span>Data Bidang</span></a></li>
         <li class="<?php echo ($halaman == 'data_anggota_aktif' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota') ?>"><i class="fa fa-fw fa-users"></i><span>Data Anggota Aktif</span></a></li>
         <li class="<?php echo ($halaman == 'data_anggota_non_aktif' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/nonaktif') ?>"><i class="fa fa-fw fa-users"></i><span>Data Anggota Nonaktif</span></a></li> 
         <li class="<?php echo ($halaman == 'iuran_wajib' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/iuran_wajib') ?>"><i class="fa fa-fw fa-money"></i><span>Iuran Wajib</span></a></li> 

@@ -23,7 +23,7 @@
               <div class="row">
                 <div class="form-group ">
                   <div class="pull-right col-sm-3 ">
-                    <input type="text" class="form-control" id="search" placeholder="Cari berdasarkan nama atau id" name="no_telepon">
+                    <input type="text" class="form-control" id="search-pembiayaan" placeholder="Cari berdasarkan nama atau id" name="no_telepon">
                   </div>
                   
                 </div>
@@ -46,9 +46,13 @@
                     </tr>
                   </thead>
                   <tbody id="table-body">
-                    <?php foreach ($pembiayaan as $data_pembiayaan): ?>
+                    <?php 
+                      $count = 0;
+                    foreach ($pembiayaan as $data_pembiayaan): 
+                      $count++
+                    ?>
                       <tr>
-                        <td><?php echo $data_pembiayaan['id_pembiayaan']?></td>
+                        <td><?php echo $count?></td>
                         <td><?php echo $data_pembiayaan['nama']?></td>
                         <td class="uang"><?php echo $data_pembiayaan['jumlah']?></td>
                         <td><?php echo $data_pembiayaan['jangka_waktu']?> bulan</td>
@@ -56,12 +60,12 @@
                         <td class="uang"><?php echo $data_pembiayaan['pengembalian_pokok']?></td>         
                         <td><?php echo $data_pembiayaan['tanggal']?></td>
                         <td><?php echo $data_pembiayaan['keterangan']?></td>
-                        <td class="<?php echo ($data_pembiayaan['status_pembiayaan'] == "Belum Lunas" ? 'belum-lunas':'lunas')  ?>"><?php echo $data_pembiayaan['status_pembiayaan'] ?></td>
+                        <td class="<?php echo ($data_pembiayaan['status_pembiayaan'] == "Belum Lunas" ? "belum-lunas":"lunas")  ?>"><?php echo $data_pembiayaan['status_pembiayaan'] ?></td>
                         <td>
                           <div class="btn-group btn-group-sm">
                             <a href="<?php echo site_url('anggota/data_angsuran/'.$data_pembiayaan['id_pembiayaan']) ?>" class="btn btn-info">
                               <i class="fa fa-fw fa-info"></i>Lihat detail angsuran</a>
-                            <button type="button" class="btn btn-danger hapus" id="<?php  echo $data_pembiayaan['id_pembiayaan']?>">
+                            <button type="button" class="btn btn-danger hapus-pembiayaan" id="<?php  echo $data_pembiayaan['id_pembiayaan']?>">
                               <i class="fa fa-fw fa-trash-o"></i>Hapus</button>
                           </div>
                         </td>

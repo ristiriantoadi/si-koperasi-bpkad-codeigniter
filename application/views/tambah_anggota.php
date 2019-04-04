@@ -65,13 +65,11 @@
                 <label class="control-label col-sm-3" for="bidang">Bidang:</label>
                 <div class="col-sm-9">
                   <select class="form-control" name="bidang" id="bidang">
-                    <option value="Sekretariat">Sekretariat</option>
-                    <option value="Anggaran">Anggaran</option>
-                    <option value="Pembendaharaan">Pembendaharaan</option>
-                    <option value="Akuntansi">Akuntansi</option>
-                    <option value="BUD">BUD</option>
-                    <option value="UPT Pemanfaatan Aset">UPT Pemanfaatan Aset</option>
-                    <option value="UPT Islamic Center">UPT Islamic Center</option>
+                    <?php 
+                      foreach($bidang as $data_bidang):
+                    ?>
+                      <option value="<?php echo $data_bidang['nama_bidang'] ?>"><?php echo $data_bidang['nama_bidang']?></option>
+                    <?php endforeach; ?>
                   </select>
                 </div>
               </div>
