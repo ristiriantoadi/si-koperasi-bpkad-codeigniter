@@ -225,9 +225,9 @@ class Model_anggota extends CI_Model {
                         $this->db->select('*');
                         $this->db->from('pembiayaan');
                         $this->db->join('anggota', 'pembiayaan.id_anggota = anggota.id_anggota');
-                        $query = $this->db->get_where('', array('pembiayaan.id_anggota'=>$id_anggota));
+                        $query = $this->db->get_where('', array('pembiayaan.id_anggota'=>$id_anggota, 'pembiayaan.status_pembiayaan'=>'Belum Lunas'));
                         //$query = $this->db->get_where('iuran_wajib', array('id_anggota' => $id_anggota)); 
-                        return $query->result_array();
+                        return $query->row_array();
                 }
         }
 
@@ -251,6 +251,33 @@ class Model_anggota extends CI_Model {
         public function get_pembiayaan_by_id_pembiayaan($id_pembiayaan=null){
                 $result = $this->db->get_where('pembiayaan', array('id_pembiayaan'=>$id_pembiayaan))->row();
                 return $result->jumlah;       
+        }
+
+        public function get_semua_pembiayaan_by_id_anggota($id_anggota=null){
+                //$result = $this->db->get_where('pembiayaan', array('id_anggota'=>$id_anggota));
+                //$result->result_array();
+                if($id_anggota==null){
+                        $this->db->select('*');
+                        $this->db->from('pembiayaan');
+                        $this->db->join('anggota', 'pembiayaan.id_anggota = anggota.id_anggota');
+                        $query = $this->db->get_where('', array('anggota.status'=>"aktif"));
+                        return $query->result_array();
+
+                }
+                else {
+                        //$this->db->select('*');
+                        //$this->db->from('pembiayaan');
+                        //$this->db->where('iuran_wajib.id_anggota', $id_anggota);
+                        //$this->db->join('anggota', 'iuran_wajib.id_anggota = anggota.id_anggota');
+                        //$this->db->like('anggota', $cari)
+                        //return $query->result_array();
+                        $this->db->select('*');
+                        $this->db->from('pembiayaan');
+                        $this->db->join('anggota', 'pembiayaan.id_anggota = anggota.id_anggota');
+                        $query = $this->db->get_where('', array('pembiayaan.id_anggota'=>$id_anggota));
+                        //$query = $this->db->get_where('iuran_wajib', array('id_anggota' => $id_anggota)); 
+                        return $query->result_array();
+                }
         }
 
         public function get_jumlah_pembiayaan($id_pembiayaan){
@@ -328,9 +355,9 @@ class Model_anggota extends CI_Model {
 
         public function get_sisa_pembiayaan($id_anggota){
 
-                $this->db->select('jumlah');
+                $this->db->select('*');
                 $this->db->from('pembiayaan');
-                $this->db->where('pembiayaan.id_anggota', $id_anggota);
+                $this->db->where(array('pembiayaan.id_anggota', $id_anggota, 'pembiayaan.status_pembiayaan'=>'Belum Lunas'));
                 //$this->db->join('anggota', 'pembiayaan.id_anggota = anggota.id_anggota');
                         //$this->db->like('anggota', $cari)
                         //return $query->result_array();
@@ -571,6 +598,21 @@ class Model_anggota extends CI_Model {
                 echo $this->input->post('no_telepon');
                 return $this->db->replace('anggota', $data);
 
+        }
+
+        public function get_sisa_pembiayaan_by_id_anggota($id_anggota){
+                $data_pembiayaan = $this->db->get_where('pembiayaan', array('id_anggota'=>$id_anggota, 
+                'status_pembiayaan'=>"Belum Lunas"))->row_array();
+                //$total_angsuran = 
+               //echo $data_pembiayaan['id_pembiayaan'];
+                //exit();
+                $total_angsuran = $this->get_total_angsuran_by_id_pembiayaan($data_pembiayaan['id_pembiayaan']);
+                $jumlah_pembiayaan = $data_pembiayaan['jumlah'];
+                $sisa_pembiayaan = $jumlah_pembiayaan - $total_angsuran;
+                echo $sisa_pembiayaan;
+                exit();
+                return $sisa_pembiayaan;
+                
         }
         
 }

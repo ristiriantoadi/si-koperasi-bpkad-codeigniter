@@ -42,9 +42,9 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-3" for="jumlah">Jumlah Pembiayaan:</label>
+                                <label class="control-label col-sm-3" for="sisa_pembiayaan">Sisa Pembiayaan:</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="jumlah-pembiayaan" name="jumlah_pembiayaan" readonly="readonly">
+                                    <input type="text" class="form-control" id="sisa-pembiayaan" name="sisa_pembiayaan" readonly="readonly">
                                 </div>
                             </div>
                             <div class="form-group">

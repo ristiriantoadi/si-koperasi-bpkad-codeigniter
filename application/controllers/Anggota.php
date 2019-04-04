@@ -53,13 +53,33 @@ class Anggota extends CI_Controller {
 		$data['total_iuran_wajib']=$this->Model_anggota->get_total_iuran_wajib($id_anggota);
 		//$data['pembiayaan'] = $this->Model_anggota->
 		//$data['sisa_pembiayaan']=$this->Model_anggota->get_sisa_pembiayaan($id_anggota);
-		$pembiayaan = $this->Model_anggota->get_sisa_pembiayaan($id_anggota);
-		$angsuran = $this->Model_anggota->get_total_angsuran($id_anggota);
-		$data['sisa_pembiayaan'] = $pembiayaan['jumlah']-$angsuran['total_angsuran'];
-		//echo $data['sisa_pembiayaan'];
+
+		//$pembiayaan = $this->Model_anggota->get_sisa_pembiayaan($id_anggota);
+		$pembiayaan  = $this->Model_anggota->get_pembiayaan($id_anggota);
+		print_r($pembiayaan);
 		//exit();
-		$data['total_angsuran'] = $angsuran['total_angsuran'];
-		$data['pembiayaan'] = $this->Model_anggota->get_id_pembiayaan($id_anggota);
+		if(!empty($pembiayaan)){
+			//echo print_r($pembiayaan);
+			//exit();
+			$angsuran = $this->Model_anggota->get_total_angsuran_by_id_pembiayaan($pembiayaan['id_pembiayaan']);
+			$data['sisa_pembiayaan'] = $pembiayaan['jumlah']-$angsuran;
+			//echo $data['sisa_pembiayaan'];
+			//exit();
+			$data['total_angsuran'] = $angsuran;
+			$data['pembiayaan'] = $this->Model_anggota->get_id_pembiayaan($id_anggota);
+			
+			//kalau ternyata sudah lunas pembiayaan, maka data reset ke awal
+			if($data['sisa_pembiayaan'] < 0){
+				$data['total_angsuran'] = 0; 
+				$data['sisa_pembiayaan'] = 0;
+			}
+		}
+		else{
+			$data['total_angsuran'] = 0;
+			$data['sisa_pembiayaan'] = 0;
+			$data['pembiayaan']['id_pembiayaan'] = -1;
+ 		}
+
 		$this->load->view('templates/header', $data);
 		$this->load->view('data_individu', $data);
 		$this->load->view('templates/footer');
@@ -201,7 +221,7 @@ class Anggota extends CI_Controller {
 		$this->load->model('Model_anggota');
 		$data = array(
 			'halaman' => 'pembiayaan',
-			'pembiayaan'=>$this->Model_anggota->get_pembiayaan($id_anggota)
+			'pembiayaan'=>$this->Model_anggota->get_semua_pembiayaan_by_id_anggota($id_anggota)
 		);
 
 		//print_r($data['iuran_wajib']);

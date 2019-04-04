@@ -593,6 +593,12 @@ class Proses extends CI_Controller {
 
 	}
 
+	public function get_sisa_pembiayaan_by_id_anggota($id_anggota){
+		$this->load->model('Model_anggota');
+		$sisa_pembiayaan = $this->Model_anggota->get_sisa_pembiayaan_by_id_anggota($id_anggota);
+		return $sisa_pembiayaan;
+	}
+
 
 	
 }

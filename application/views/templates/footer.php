@@ -322,9 +322,9 @@
         document.getElementById("id-biaya").value=result;
         //$("#")
       }});
-      $.ajax({url: "<?php echo site_url('proses/cari_jumlah_pembiayaan/')?>"+keyword, success: function(result){
+      $.ajax({url: "<?php echo site_url('proses/get_sisa_pembiayaan_by_id_anggota/')?>"+keyword, success: function(result){
         //$("#anggota").html(result);
-        document.getElementById("jumlah-pembiayaan").value = formatUangNoCurrency(result);
+        document.getElementById("sisa-pembiayaan").value = formatUangNoCurrency(result);
         //$("#")
       }});
       $.ajax({url: "<?php echo site_url('proses/cari_pembiayaan_pokok/')?>"+keyword, success: function(result){
