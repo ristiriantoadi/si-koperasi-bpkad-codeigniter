@@ -68,7 +68,7 @@
                     <?php 
                       foreach($bidang as $data_bidang):
                     ?>
-                      <option value="<?php echo $data_bidang['nama_bidang'] ?>"><?php echo $data_bidang['nama_bidang']?></option>
+                      <option value="<?php echo $data_bidang['id_bidang'] ?>"><?php echo $data_bidang['nama_bidang']?></option>
                     <?php endforeach; ?>
                   </select>
                 </div>

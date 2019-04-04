@@ -31,7 +31,7 @@
                             <p><span class="col-sm-4">No Telp<span class="pull-right">:</span></span><?php echo $anggota['no_telepon'] ?></p>
                             <p><span class="col-sm-4">No KTP<span class="pull-right">:</span></span><?php echo $anggota['no_ktp'] ?></p>
                             
-                            <p><span class="col-sm-4">Bidang<span class="pull-right">:</span></span><?php echo $anggota['bidang'] ?></p>
+                            <p><span class="col-sm-4">Bidang<span class="pull-right">:</span></span><?php echo $anggota['nama_bidang'] ?></p>
                             <p><span class="col-sm-4">Tanggal daftar<span class="pull-right">:</span></span><?php echo $anggota['tanggal'] ?></p>
                             <p style="margin-top:20px;margin-left:15px"><a href="<?php echo site_url('anggota/edit_anggota/'.$anggota['id_anggota'])?>" class="btn btn-default btn-sm">Edit Data</a></p>  
                         </div> 

@@ -48,7 +48,7 @@
                         <td><?php echo $data_anggota['id_anggota']?></td>
                         <td><?php echo $data_anggota['nama']?></td>
                         <td><?php echo $data_anggota['no_telepon']?></td>
-                        <td><?php echo $data_anggota['bidang']?></td>
+                        <td><?php echo $data_anggota['nama_bidang']?></td>
                         <td><?php echo $data_anggota['alamat']?></td>
                         <td><?php echo $data_anggota['tanggal']?></td>
                         <td>

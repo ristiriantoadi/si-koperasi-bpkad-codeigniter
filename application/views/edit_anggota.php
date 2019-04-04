@@ -61,7 +61,7 @@
                 <div class="col-sm-9">
                   <select class="form-control" name="bidang" id="bidang">
                     <?php foreach($bidang as $data_bidang):?>
-                      <option value="<?php echo $data_bidang['nama_bidang'] ?>" <?php echo($anggota['bidang'] == $data_bidang['nama_bidang'] ? 'selected':'') ?> ><?php echo $data_bidang['nama_bidang'] ?></option>
+                      <option value="<?php echo $data_bidang['id_bidang'] ?>" <?php echo($anggota['nama_bidang'] == $data_bidang['nama_bidang'] ? 'selected':'') ?> ><?php echo $data_bidang['nama_bidang'] ?></option>
                     <?php endforeach; ?>      
                   </select>
                 </div>

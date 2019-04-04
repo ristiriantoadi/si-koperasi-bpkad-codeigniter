@@ -90,7 +90,7 @@ class Proses extends CI_Controller {
 					<td>'.$data_anggota['id_anggota'].'</td>
 					<td>'.$data_anggota['nama'].'</td>
 					<td>'.$data_anggota['no_telepon'].'</td>
-					<td>'.$data_anggota['bidang'].'</td>
+					<td>'.$data_anggota['nama_bidang'].'</td>
 					<td>'.$data_anggota['alamat'].'</td>
 					<td>'.$data_anggota['tanggal'].'</td>
 					<td>
@@ -193,7 +193,7 @@ class Proses extends CI_Controller {
 					<td>'.$data_anggota['id_anggota'].'</td>
 					<td>'.$data_anggota['nama'].'</td>
 					<td>'.$data_anggota['no_telepon'].'</td>
-					<td>'.$data_anggota['bidang'].'</td>
+					<td>'.$data_anggota['nama_bidang'].'</td>
 					<td>'.$data_anggota['alamat'].'</td>
 					<td>'.$data_anggota['tanggal'].'</td>
 					<td>
@@ -215,8 +215,8 @@ class Proses extends CI_Controller {
 		$this->load->model('Model_anggota');
 		//echo $this->input->post('anggota');
 		if($cari==null)
-			$data=$this->Model_anggota->get_data_anggota_nonaktif();
-		else $data = $this->Model_anggota->cari_anggota_nonaktif($cari);
+			$data=$this->Model_anggota->get_data_anggota_non_aktif();
+		else $data = $this->Model_anggota->cari_anggota_non_aktif($cari);
 		$text="";
 			foreach ($data as $data_anggota):
 				$text.='
@@ -224,12 +224,12 @@ class Proses extends CI_Controller {
 					<td>'.$data_anggota['id_anggota'].'</td>
 					<td>'.$data_anggota['nama'].'</td>
 					<td>'.$data_anggota['no_telepon'].'</td>
-					<td>'.$data_anggota['bidang'].'</td>
+					<td>'.$data_anggota['nama_bidang'].'</td>
 					<td>'.$data_anggota['alamat'].'</td>
 					<td>'.$data_anggota['tanggal'].'</td>
 					<td>
 						<div class="btn-group btn-group-sm">
-                            <a href="'.site_url('anggota/data_nonaktif/'.$data_anggota['id_anggota']).'" class="btn btn-info">
+                            <a href="'.site_url('anggota/data/'.$data_anggota['id_anggota']).'" class="btn btn-info">
                               <i class="fa fa-fw fa-info"></i>Lihat selengkapnya</a>
           	</div>
 					</td>
@@ -445,7 +445,7 @@ class Proses extends CI_Controller {
 		//echo $this->input->post('anggota');
 		if($cari==null)
 			$data=$this->Model_anggota->get_data_anggota();
-		else $data = $this->Model_anggota->cari_anggota($cari);
+		else $data = $this->Model_anggota->cari_anggota_aktif($cari);
 		$text="";
 			foreach ($data as $data_anggota):
 				$text.='

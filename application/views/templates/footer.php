@@ -125,9 +125,10 @@
       }});
     }); 
 
-    $("#id-anggota").keyup(function(){
+    $("#id-anggota-iuran-wajib").keyup(function(){
       //console.log("abababa");(
       var keyword = convertToURL(this.value);
+      console.log(keyword);
       //document.getElementById("nama").value=this.value;
       $.ajax({url: "<?php echo site_url('proses/cari_anggota_iuran/')?>"+keyword, success: function(result){
         $("#anggota").html(result);
@@ -254,7 +255,7 @@
       
     });
 
-    $("#id-anggota").change(function(){
+    $("#id-anggota-iuran-wajib").change(function(){
       //$("input").css("background-color", "pink");
       //console.log(this.value);
       console.log("something");

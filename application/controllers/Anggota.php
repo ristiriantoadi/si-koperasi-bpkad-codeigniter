@@ -37,6 +37,8 @@ class Anggota extends CI_Controller {
 			'halaman' => 'data_anggota_non_aktif',
 			'anggota'=> $this->Model_anggota->get_data_anggota_non_aktif()
 		);
+		//print_r($data['anggota']);
+		//exit();
 		$this->load->view('templates/header', $data);
 		$this->load->view('data_anggota_non_aktif', $data);
 		$this->load->view('templates/footer');
@@ -56,7 +58,7 @@ class Anggota extends CI_Controller {
 
 		//$pembiayaan = $this->Model_anggota->get_sisa_pembiayaan($id_anggota);
 		$pembiayaan  = $this->Model_anggota->get_pembiayaan($id_anggota);
-		print_r($pembiayaan);
+		//print_r($pembiayaan);
 		//exit();
 		if(!empty($pembiayaan)){
 			//echo print_r($pembiayaan);
@@ -66,7 +68,7 @@ class Anggota extends CI_Controller {
 			//echo $data['sisa_pembiayaan'];
 			//exit();
 			$data['total_angsuran'] = $angsuran;
-			$data['pembiayaan'] = $this->Model_anggota->get_id_pembiayaan($id_anggota);
+			$data['pembiayaan']['id_pembiayaan'] = $pembiayaan['id_pembiayaan'];
 			
 			//kalau ternyata sudah lunas pembiayaan, maka data reset ke awal
 			if($data['sisa_pembiayaan'] < 0){
@@ -133,7 +135,11 @@ class Anggota extends CI_Controller {
 		$this->db->limit(1);
 		$this->db->order_by('id_anggota', 'DESC');
 		$data['anggota'] = $this->db->get()->row_array();
-		$data['anggota']['id_anggota'] += 1;
+		if(empty($data['anggota'])){
+			$data['anggota']['id_anggota'] = 1;
+			
+		}
+		else $data['anggota']['id_anggota'] += 1;
 		
 		$this->load->view('templates/header', $data);
 		$this->load->view('tambah_anggota');
@@ -146,7 +152,7 @@ class Anggota extends CI_Controller {
 		
 		$data = array(
 			'halaman' => 'data_anggota',
-			'anggota'=> $this->Model_anggota->get_edit_anggota($id_anggota),
+			'anggota'=> $this->Model_anggota->get_data_anggota($id_anggota),
 			'bidang' => $this->Model_anggota->get_data_bidang()
 		);
 		$this->load->view('templates/header', $data);

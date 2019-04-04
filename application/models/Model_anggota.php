@@ -11,7 +11,7 @@ class Model_anggota extends CI_Model {
                         'no_telepon' => $this->input->post('no_telepon'),
                         'no_ktp' => $this->input->post('no_ktp'),
                         'tempat_tanggal_lahir' => $this->input->post('tempat_tanggal_lahir'),     
-                        'bidang' => $this->input->post('bidang'),
+                        'id_bidang' => $this->input->post('bidang'),
                         'alamat' => $this->input->post('alamat'),
                         'tanggal' => $tanggal,
                         'status' => 'aktif',
@@ -147,11 +147,19 @@ class Model_anggota extends CI_Model {
 
                 if($id_anggota==null){
                         //$this->db->order_by('id_anggota', 'ASC');
-                        $query = $this->db->get_where('anggota', array('status'=>'aktif'));
+                        $this->db->select('*');
+                        $this->db->from('bidang');
+                        $this->db->join('anggota', 'bidang.id_bidang = anggota.id_bidang');
+                        $query = $this->db->get_where('', array('anggota.status'=>'aktif'));
+                        
+                        //$query = $this->db->get_where('anggota', array('status'=>'aktif'));
                         return $query->result_array();
                 }
                 else {
-                        $query = $this->db->get_where('anggota', array('id_anggota' => $id_anggota)); 
+                        $this->db->select('*');
+                        $this->db->from('bidang');
+                        $this->db->join('anggota', 'bidang.id_bidang = anggota.id_bidang');
+                        $query = $this->db->get_where('', array('anggota.id_anggota' => $id_anggota)); 
                         return $query->row_array();
                 }
         }
@@ -160,11 +168,19 @@ class Model_anggota extends CI_Model {
 
                 if($id_anggota==null){
                         //$this->db->order_by('id_anggota', 'ASC');
-                        $query = $this->db->get_where('anggota', array('status'=>'nonaktif'));
+                        $this->db->select('*');
+                        $this->db->from('bidang');
+                        $this->db->join('anggota', 'bidang.id_bidang = anggota.id_bidang');
+                        $query = $this->db->get_where('', array('anggota.status'=>'aktif'));
+                        
+                        //$query = $this->db->get_where('anggota', array('status'=>'aktif'));
                         return $query->result_array();
                 }
                 else {
-                        $query = $this->db->get_where('anggota', array('id_anggota' => $id_anggota)); 
+                        $this->db->select('*');
+                        $this->db->from('bidang');
+                        $this->db->join('anggota', 'bidang.id_bidang = anggota.id_bidang');
+                        $query = $this->db->get_where('', array('anggota.id_anggota' => $id_anggota)); 
                         return $query->row_array();
                 }
         }
@@ -197,8 +213,13 @@ class Model_anggota extends CI_Model {
         }
 
         public function get_data_anggota_non_aktif(){
-                $query = $this->db->get_where('anggota', array('status'=>'nonaktif'));
-                        return $query->result_array();
+                $this->db->select('*');
+                $this->db->from('bidang');
+                $this->db->join('anggota', 'bidang.id_bidang = anggota.id_bidang');
+                $query = $this->db->get_where('', array('anggota.status'=>'nonaktif'));
+                        
+                        //$query = $this->db->get_where('anggota', array('status'=>'aktif'));
+                 return $query->result_array();
         }
 
         public function get_id_pembiayaan($id_anggota){
@@ -508,9 +529,12 @@ class Model_anggota extends CI_Model {
 
         public function cari_anggota_aktif($cari){
                 $cari = str_replace('-',' ',$cari);
-                $this->db->like('id_anggota', $cari); $this->db->or_like('nama', $cari);
+                $this->db->select('*');
+                $this->db->from('bidang');
+                $this->db->join('anggota', 'bidang.id_bidang = anggota.id_bidang');                        
+                $this->db->like('anggota.id_anggota', $cari); $this->db->or_like('anggota.nama', $cari);
                 //$this->db->order_by('id_anggota', 'ASC');
-                $query = $this->db->get_where('anggota', array('status'=>'aktif'));
+                $query = $this->db->get_where('', array('anggota.status'=>'aktif'));
                 return $query->result_array();
 
         }
@@ -523,21 +547,28 @@ class Model_anggota extends CI_Model {
                 //$data_anggota1 = $this->db->query("SELECT * FROM pembiayaan WHERE sta")
                 //print_r($data_anggota->result_array());
                 //exit();
-                $data_anggota = $this->db->query("SELECT anggota.id_anggota, anggota.nama
+                $data_anggota = $this->db->query("SELECT distinct anggota.id_anggota, anggota.nama
                                                  FROM anggota LEFT JOIN pembiayaan
                                                 ON anggota.id_anggota = pembiayaan.id_anggota
-                                                WHERE anggota.nama LIKE '%$cari%' 
-                                                AND anggota.status = 'aktif' 
-                                                AND (pembiayaan.id_pembiayaan IS NULL
-                                                OR pembiayaan.status_pembiayaan = 'Lunas')");
+                                                WHERE anggota.status = 'aktif'
+                                                AND anggota.id_anggota <> ALL(
+                                                        SELECT id_anggota FROM pembiayaan 
+                                                        WHERE status_pembiayaan ='Belum Lunas'
+                                                ) ");
+                                                
+                print_r($data_anggota->result_array());
+                //exit();
                 return $data_anggota->result_array();
         }
 
-        public function cari_anggota_nonaktif($cari){
+        public function cari_anggota_non_aktif($cari){
                 $cari = str_replace('-',' ',$cari);
-                $this->db->like('id_anggota', $cari); $this->db->or_like('nama', $cari);
+                $this->db->select('*');
+                $this->db->from('bidang');
+                $this->db->join('anggota', 'bidang.id_bidang = anggota.id_bidang');                        
+                $this->db->like('anggota.id_anggota', $cari); $this->db->or_like('anggota.nama', $cari);
                 //$this->db->order_by('id_anggota', 'ASC');
-                $query = $this->db->get_where('anggota', array('status'=>'nonaktif'));
+                $query = $this->db->get_where('', array('status'=>'nonaktif'));
                 return $query->result_array();
 
         }
@@ -590,7 +621,7 @@ class Model_anggota extends CI_Model {
                         'no_telepon' => $this->input->post('no_telepon'),
                         'no_ktp' => $this->input->post('no_ktp'),
                         'tempat_tanggal_lahir' => $this->input->post('tempat_tanggal_lahir'),
-                        'bidang' => $this->input->post('bidang'),
+                        'id_bidang' => $this->input->post('bidang'),
                         'alamat' => $this->input->post('alamat'),
                         'tanggal' => $this->input->post('tanggal'),
                         'status' =>'aktif'
