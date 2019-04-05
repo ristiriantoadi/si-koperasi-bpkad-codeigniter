@@ -243,9 +243,15 @@ class Proses extends CI_Controller {
 	public function cari_iuran_wajib($cari=null){
 		$this->load->model('Model_anggota');
 		//echo $this->input->post('anggota');
-		if($cari==null)
+		if($cari==null){
 			$data=$this->Model_anggota->get_iuran_wajib();
-		else $data = $this->Model_anggota->cari_iuran_wajib($cari);
+			$total_iuran_wajib = $this->Model_anggota->get_total_iuran_wajib();
+		}
+		else {
+			$data = $this->Model_anggota->cari_iuran_wajib($cari);
+			$total_iuran_wajib = $this->Model_anggota->get_total_iuran_wajib_by_pencarian($cari);
+
+		}
 		$text="";
 		$count=0;  	
 		foreach ($data as $data_iuran):
@@ -254,7 +260,7 @@ class Proses extends CI_Controller {
               		<td>'.($count+1).'</td>
                   <td>'.$data_iuran['nama'].'</td>
                   <td>'.$data_iuran['tanggal_transaksi'].'</td>
-                  <td>Rp. 200.000</td>
+                  <td class="uang">'.$data_iuran['jumlah_iuran_wajib'].'</td>
                   <td>
                   	<div class="btn-group btn-group-sm">
                     	<button type="button" class="btn btn-danger hapus-iuran-wajib" id="'.$data_iuran['id_iuran_wajib'].'">
@@ -267,7 +273,7 @@ class Proses extends CI_Controller {
 			$count = $count*200000;
 			$text.='<tr>
 								<td colspan="3"><b>Total Jumlah</b></td>
-								<td class="uang">'.$count.'</td>
+								<td class="uang">'.$total_iuran_wajib.'</td>
 							</tr>';
 			echo $text;
 			//exit();
@@ -373,6 +379,12 @@ class Proses extends CI_Controller {
 		}
 		else echo "gagal";
 
+	}
+
+	public function hapus_angsuran($id_angsuran, $id_pembiayaan){
+		$this->load->model('Model_anggota');
+		$this->Model_anggota->hapus_angsuran($id_angsuran);
+		redirect(site_url('anggota/data_angsuran/'.$id_pembiayaan));
 	}
 
 	public function hapus_iuran_wajib($id_anggota){
@@ -521,6 +533,18 @@ class Proses extends CI_Controller {
 		$this->db->insert_batch('bidang', $data);
 		redirect(site_url('anggota'));
 		
+	}
+
+	public function edit_data_master_iuran_wajib(){
+		$this->load->model('Model_anggota');
+		//$data
+		//$this->db->insert()
+		$data = array(
+			'jumlah_iuran_wajib' => str_replace(array("Rp. ","."),'',$this->input->post("jumlah_iuran_wajib"))
+		);
+
+		$this->db->replace('master_iuran_wajib', $data);
+		redirect(site_url('anggota'));
 	}
 
 	public function cari_id_pembiayaan($cari=null){

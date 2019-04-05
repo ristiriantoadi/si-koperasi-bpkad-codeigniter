@@ -99,6 +99,18 @@ class Anggota extends CI_Controller {
 		$this->load->view('templates/footer');
 	}
 
+	public function data_master_iuran_wajib()
+	{
+		$this->load->model('Model_anggota');
+		$data = array(
+			'halaman' => 'data_master_iuran_wajib',
+			'jumlah_iuran_wajib'=> $this->Model_anggota->get_data_master_iuran_wajib()
+		);
+		$this->load->view('templates/header', $data);
+		$this->load->view('edit_data_master_iuran_wajib', $data);
+		$this->load->view('templates/footer');
+	}
+
 
 
 	public function data_angsuran($id_pembiayaan)
@@ -193,7 +205,8 @@ class Anggota extends CI_Controller {
 		
 		$data = array(
 			'halaman' => 'iuran_wajib',
-			'iuran_wajib'=>$this->Model_anggota->get_iuran_wajib($id_anggota)
+			'iuran_wajib'=>$this->Model_anggota->get_iuran_wajib($id_anggota),
+			'total_iuran_wajib'=>$this->Model_anggota->get_total_iuran_wajib($id_anggota)
 		);
 
 		//print_r($data['iuran_wajib']);
@@ -242,12 +255,15 @@ class Anggota extends CI_Controller {
 
 
 	public function tambah_iuran_wajib(){
+		$this->load->model('Model_anggota');
+		
 		$data = array(
-			'halaman' => 'tambah_iuran_wajib'
+			'halaman' => 'tambah_iuran_wajib',
+			'jumlah_iuran_wajib' => $this->Model_anggota->get_data_master_iuran_wajib()
 		);
 
 		$this->load->view('templates/header', $data);
-		$this->load->view('tambah_iuran_wajib');
+		$this->load->view('tambah_iuran_wajib', $data);
 		$this->load->view('templates/footer');
 
 	}

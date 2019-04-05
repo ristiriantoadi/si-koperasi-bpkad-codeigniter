@@ -43,7 +43,7 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-3" for="jumlah">Jumlah:</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="jumlah" readonly="readonly" value="Rp. 200.000" name="jumlah">
+                                    <input type="text" class="form-control uang-input" id="jumlah" readonly="readonly" value="<?php echo $jumlah_iuran_wajib?>" name="jumlah">
                                 </div>
                             </div>
                             <div class="pull-right">

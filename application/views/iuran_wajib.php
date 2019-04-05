@@ -48,7 +48,7 @@
                           <td><?php echo ($count+1)?></td>
                           <td><?php echo $data_iuran['nama']?></td>
                           <td><?php echo $data_iuran['tanggal_transaksi']?></td>
-                          <td><?php echo "Rp. 200.000"?></td>
+                          <td class="uang"><?php echo $data_iuran['jumlah_iuran_wajib']?></td>
                           <td>
                             <div class="btn-group btn-group-sm">
                               <button type="button" class="btn btn-danger hapus-iuran-wajib" id="<?php  echo $data_iuran['id_iuran_wajib']?>">
@@ -61,7 +61,7 @@
                       endforeach; ?>
                     <tr>
                       <td colspan="3"><b>Total Jumlah</b></td>
-                      <td class="uang"><?php echo $count*200000 ?></td>
+                      <td class="uang"><?php echo $total_iuran_wajib?></td>
                     </tr> 
                   </tbody>
                 </table>

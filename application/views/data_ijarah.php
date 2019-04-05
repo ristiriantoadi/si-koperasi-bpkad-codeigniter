@@ -24,8 +24,7 @@
                 <div class="form-group ">
                   <div class="pull-right col-sm-3 ">
                     <input type="text" class="form-control" id="search-ijarah" placeholder="Cari berdasarkan nama" name="no_telepon">
-                  </div>
-                  
+                  </div>                  
                 </div>
                 
               </div>

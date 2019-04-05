@@ -31,7 +31,8 @@ class Model_anggota extends CI_Model {
                 //exit();
                 $data = array(
                         'id_anggota' => $this->input->post('id_anggota'),
-                        'tanggal_transaksi' => $tanggal
+                        'tanggal_transaksi' => $tanggal,
+                        'jumlah_iuran_wajib' => str_replace(array("Rp. ","."),'',$this->input->post("jumlah"))
 
                     );
 
@@ -358,8 +359,49 @@ class Model_anggota extends CI_Model {
                 }
         }
 
-        public function get_total_iuran_wajib($id_anggota){
+        public function get_total_iuran_wajib_by_pencarian($cari){
+                /*
+                $this->db->select('*');
+                $this->db->from('iuran_wajib');
+                //$this->db->where('iuran_wajib.id_anggota', $id_anggota);
+                $this->db->join('anggota', 'iuran_wajib.id_anggota = anggota.id_anggota');
+                $this->db->like('anggota.nama', $cari);
+                */
+                $query = $this->db->query("SELECT *
+                FROM iuran_wajib WHERE iuran_wajib.id_anggota= ANY(
+                        SELECT id_anggota FROM anggota where nama like '%$cari%')");
+                print_r($query->result_array());
+                $total = $this->db->query("SELECT SUM('jumlah_iuran_wajib') AS total_iuran_wajib
+                FROM iuran_wajib WHERE iuran_wajib.id_anggota= ANY(
+                        SELECT id_anggota FROM anggota where nama like '%$cari%')")->row()->total_iuran_wajib;
+                echo $total;
+                $query = $this->db->query("SELECT SUM('jumlah_iuran_wajib') AS total_iuran_wajib
+                        FROM iuran_wajib WHERE iuran_wajib.id_anggota= ANY(
+                        SELECT id_anggota FROM anggota where nama like '%$cari%')");
+                print_r($query->row());
+                //exit();
+                if(empty($total))
+                        return 0;
+                return $total;
+                        
+        }
+        public function get_total_iuran_wajib($id_anggota=null){
 
+                if($id_anggota==null){
+                        /*
+                        $this->db->select('*');
+                        $this->db->from('iuran_wajib');
+                        $this->db->join('anggota', 'iuran_wajib.id_anggota = anggota.id_anggota');
+                        $this->db->order_by('id_iuran_wajib', 'ASC');
+                        //$query = $this->db->get_where('',array('status'=>'aktif'));
+                        $this->db->where('anggota.status', 'aktif');
+                        */
+                        $total = $this->db->query("SELECT SUM(jumlah_iuran_wajib) as total_iuran_wajib 
+                        FROM iuran_wajib ")->row()->total_iuran_wajib;
+                        if(empty($total))
+                                return 0;
+                        return $total;
+                }        
                 $this->db->select('*');
                 $this->db->from('iuran_wajib');
                 $this->db->where('iuran_wajib.id_anggota', $id_anggota);
@@ -505,6 +547,11 @@ class Model_anggota extends CI_Model {
 
         }
 
+        public function hapus_angsuran($id_angsuran){
+                return $this->db->delete('angsuran', array('id_angsuran' => $id_angsuran)); 
+                
+        }
+
         public function get_edit_anggota($id_anggota){
                 $query = $this->db->get_where('anggota', array('id_anggota' => $id_anggota));
                 return $query->row_array();
@@ -644,6 +691,16 @@ class Model_anggota extends CI_Model {
                 exit();
                 return $sisa_pembiayaan;
                 
+        }
+        
+        public function get_data_master_iuran_wajib(){
+                $hasil = $this->db->query('SELECT    *
+                FROM      master_iuran_wajib
+                ORDER BY  id_iuran_wajib DESC
+                LIMIT     1;')->row();
+                //print_r($hasil);
+                //exit();
+                return $hasil->jumlah_iuran_wajib;
         }
         
 }

@@ -25,12 +25,14 @@
     console.log("ababa");
     $(document.body).delegate('.hapus', 'click', function(){
       console.log(this.id);
-      if(confirm("Anda yakin ingin menonaktifkan?")){
+      if(confirm("Anda yakin ingin menonaktifkan anggota?")){
         $.ajax({url: "<?php echo site_url('proses/nonaktifkan_anggota/')?>"+this.id, success: function(result){
           $("#table-body").html(result);
         }});
       }
     });
+
+   
 
     $(document.body).delegate('.hapus-iuran-wajib', 'click', function(){
       console.log(this.id);
@@ -354,6 +356,14 @@
             $(this).html(formatUang($(this).html()));
         })
     
+    }
+
+    if($(".uang-input").length){
+      $(".uang-input").each(function(index, value){
+          console.log($(this).val());
+            $(this).val(formatUangNoCurrency($(this).val()));
+        })
+      console.log("abc");
     }
       
       //$(".uang").html(formatUang($this.html()));
