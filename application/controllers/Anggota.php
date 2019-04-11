@@ -18,6 +18,14 @@ class Anggota extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
+	public function __construct(){
+		parent::__construct();
+		if(!$this->session->userdata('admin')){
+			redirect(site_url('login'));
+		}
+		
+	}
+
 	public function index()
 	{
 		$this->load->model('Model_anggota');
@@ -324,6 +332,11 @@ class Anggota extends CI_Controller {
 		$this->load->view('tambah_angsuran', $data);
 		$this->load->view('templates/footer');
 
+	}
+
+	public function logout(){
+		$this->session->sess_destroy();
+		redirect(site_url('login'));
 	}
 
 }
