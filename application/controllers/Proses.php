@@ -547,6 +547,23 @@ class Proses extends CI_Controller {
 		redirect(site_url('anggota'));
 	}
 
+	public function edit_data_master_biaya_admin(){
+		$this->load->model('Model_anggota');
+		//$data
+		//$this->db->insert()
+		/*
+		$data = array(
+			'jumlah_iuran_wajib' => str_replace(array("Rp. ","."),'',$this->input->post("jumlah_iuran_wajib"))
+		);
+		*/
+
+		$jumlah_biaya_admin = str_replace(array("Rp. ","."),'',$this->input->post("jumlah_biaya_admin"));
+
+		//$this->db->replace('master_iuran_wajib', $data);
+		$this->db->query("UPDATE master_biaya_admin SET jumlah_biaya_admin=$jumlah_biaya_admin");
+		redirect(site_url('anggota'));
+	}
+
 	public function cari_id_pembiayaan($cari=null){
 		$this->load->model('Model_anggota');
 		//echo $this->input->post('anggota');

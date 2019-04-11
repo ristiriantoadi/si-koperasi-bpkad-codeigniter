@@ -70,8 +70,12 @@
                                     <input type="text" class="form-control" id="ijarah" name="ijarah" readonly="readonly">
                                 </div>
                             </div>
-                            
-                    
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" for="jumlah">Biaya Administrasi:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control uang-input" id="biaya-administrasi" name="biaya_administrasi" value="<?php echo $biaya_admin ?>" readonly="readonly">
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-3" for="alamat">Keterangan:</label>
                                 <div class="col-sm-9">

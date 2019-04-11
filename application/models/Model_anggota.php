@@ -54,8 +54,14 @@ class Model_anggota extends CI_Model {
                         'keterangan'=>$this->input->post("keterangan"),
                         'status_pembiayaan' =>'Belum Lunas'
                     );
-
-                return $this->db->insert('pembiayaan', $data);    
+                $data1 = array(
+                        'id_anggota' => $this->input->post('id_anggota'),
+                        'jumlah'=>str_replace(array("Rp. ","."),'',$this->input->post("biaya_administrasi"))
+                );
+                if($this->db->insert('biaya_admin',$data1)){
+                        return $this->db->insert('pembiayaan', $data);
+                }    
+                else return false;
         }
 
 
@@ -117,6 +123,21 @@ class Model_anggota extends CI_Model {
                 $this->db->select_sum('jumlah');
                 return $result->total_angsuran;
         }
+
+        public function get_total_biaya_admin($id_anggota=null){
+                if($id_anggota == null){
+                        $this->db->select("(SELECT SUM(jumlah) FROM biaya_admin) AS total_biaya_admin");
+                        $result = $this->db->get()->row();
+                        return $result->total_biaya_admin;        
+                }
+                /*
+                $this->db->join('anggota', 'ijarah.id = anggota.id');
+                $this->db->select("(SELECT SUM(jumlah) FROM ijarah WHERE id_anggota=$id_anggota) AS total_angsuran");
+                $this->db->select_sum('jumlah');
+                return $result->total_angsuran;
+                */
+        }
+
 
         public function get_total_ijarah_by_keyword($cari=null){
                 if($cari == null){
@@ -341,6 +362,30 @@ class Model_anggota extends CI_Model {
                         $this->db->select('*');
                         $this->db->from('ijarah');
                         $this->db->join('anggota', 'ijarah.id_anggota = anggota.id_anggota');
+                        //$this->db->order_by('id_iuran_wajib', 'ASC');
+                        $query = $this->db->get_where('',array('status'=>'aktif'));
+                        return $query->result_array();
+
+                }
+                else {
+                        $this->db->select('*');
+                        $this->db->from('iuran_wajib');
+                        $this->db->where('iuran_wajib.id_anggota', $id_anggota);
+                        $this->db->join('anggota', 'iuran_wajib.id_anggota = anggota.id_anggota');
+                        //$this->db->like('anggota', $cari)
+                        //return $query->result_array();
+                        $query = $this->db->get();
+                        //$query = $this->db->get_where('iuran_wajib', array('id_anggota' => $id_anggota)); 
+                        return $query->result_array();
+                }
+        }
+
+        public function get_biaya_admin($id_anggota=null){
+
+                if($id_anggota==null){
+                        $this->db->select('*');
+                        $this->db->from('biaya_admin');
+                        $this->db->join('anggota', 'biaya_admin.id_anggota = anggota.id_anggota');
                         //$this->db->order_by('id_iuran_wajib', 'ASC');
                         $query = $this->db->get_where('',array('status'=>'aktif'));
                         return $query->result_array();
@@ -701,6 +746,13 @@ class Model_anggota extends CI_Model {
                 //print_r($hasil);
                 //exit();
                 return $hasil->jumlah_iuran_wajib;
+        }
+
+        public function get_data_master_biaya_admin(){
+                $hasil = $this->db->query('SELECT * FROM master_biaya_admin')->row();
+                //print_r($hasil);
+                //exit();
+                return $hasil->jumlah_biaya_admin;
         }
         
 }

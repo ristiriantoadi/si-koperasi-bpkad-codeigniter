@@ -111,6 +111,18 @@ class Anggota extends CI_Controller {
 		$this->load->view('templates/footer');
 	}
 
+	public function data_master_biaya_admin()
+	{
+		$this->load->model('Model_anggota');
+		$data = array(
+			'halaman' => 'data_master_biaya_admin',
+			'jumlah_biaya_admin'=> $this->Model_anggota->get_data_master_biaya_admin()
+		);
+		$this->load->view('templates/header', $data);
+		$this->load->view('edit_data_master_biaya_admin', $data);
+		$this->load->view('templates/footer');
+	}
+
 
 
 	public function data_angsuran($id_pembiayaan)
@@ -236,6 +248,28 @@ class Anggota extends CI_Controller {
 
 	}
 	
+	public function biaya_admin($id_anggota=null){
+		$this->load->model('Model_anggota');
+		
+		$data = array(
+			'halaman' => 'biaya_admin',
+			//'ijarah'=>$this->Model_anggota->get_ijarah($id_anggota),
+			//'total_ijarah' =>$this->Model_anggota->get_total_ijarah($id_anggota)
+			//'biaya_admin'
+			'biaya_admin'=>$this->Model_anggota->get_biaya_admin($id_anggota),
+			'total_biaya_admin'=>$this->Model_anggota->get_total_biaya_admin($id_anggota)
+		);
+
+		//print_r($data['iuran_wajib']);
+		//exit();
+
+		$this->load->view('templates/header', $data);
+		$this->load->view('data_biaya_admin', $data);
+		$this->load->view('templates/footer');
+
+	}
+
+
 	public function pembiayaan($id_anggota=null){
 		$this->load->model('Model_anggota');
 		$data = array(
@@ -269,8 +303,11 @@ class Anggota extends CI_Controller {
 	}
 
 	public function tambah_pembiayaan(){
+		$this->load->model('Model_anggota');
+		
 		$data = array(
-			'halaman' => 'tambah_pembiayaan'
+			'halaman' => 'tambah_pembiayaan',
+			'biaya_admin' => $this->Model_anggota->get_data_master_biaya_admin()
 		);
 
 		$this->load->view('templates/header', $data);
