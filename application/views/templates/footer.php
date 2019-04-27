@@ -17,6 +17,8 @@
 <script src="<?php echo base_url('assets/bower_components/bootstrap/dist/js/bootstrap.min.js')?>"></script>
 <!-- AdminLTE App -->
 <script src="<?php echo base_url('assets/dist/js/adminlte.min.js')?>"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. -->
@@ -26,20 +28,119 @@
     $(document.body).delegate('.hapus', 'click', function(){
       console.log(this.id);
       if(confirm("Anda yakin ingin menonaktifkan anggota?")){
-        $.ajax({url: "<?php echo site_url('proses/nonaktifkan_anggota/')?>"+this.id, success: function(result){
+        $.ajax({url: "<?php echo site_url('anggota/nonaktifkan_anggota/')?>"+this.id, success: function(result){
           $("#table-body").html(result);
         }});
       }
     });
+    
+    $("#search-iuran-pokok-by-tanggal").daterangepicker({
+      ranges: {
+        'Hari ini': [moment(), moment()],
+        'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        '7 hari terakhir': [moment().subtract(6, 'days'), moment()],
+        '30 hari terakhir': [moment().subtract(29, 'days'), moment()],
+        'Bulan ini': [moment().startOf('month'), moment().endOf('month')],
+        'Bulan lalu': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+      },
+      "alwaysShowCalendars": true,
+      locale: {
+        format: 'DD MMM YYYY'
+      },
+      "startDate": "01 01 2019",
+      "endDate": "1 1 2020"
+    }, function(start, end, label) {
+          //console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+          var startDate= start.format('YYYY-MM-DD');
+          var endDate = end.format('YYYY-MM-DD');
+          //console.log(start.format('YYYY-MM-DD'));
+          var site = "<?php echo site_url('anggota/cari_iuran_pokok_by_date') ?>";
+          site+="/"+startDate+'/'+endDate;
+          console.log(site);
+          //location.replace(site);
 
-   
+          $.ajax({url: site, success: function(result){
+            $("#table-body").html(result);
+            $(".uang").each(function(index, value){
+              $(this).html(formatUang($(this).html()));
+            })
+          }});
+      });
+
+      $("#search-iuran-wajib-by-tanggal").daterangepicker({
+      ranges: {
+        'Hari ini': [moment(), moment()],
+        'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        '7 hari terakhir': [moment().subtract(6, 'days'), moment()],
+        '30 hari terakhir': [moment().subtract(29, 'days'), moment()],
+        'Bulan ini': [moment().startOf('month'), moment().endOf('month')],
+        'Bulan lalu': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+      },
+      "alwaysShowCalendars": true,
+      locale: {
+        format: 'DD MMM YYYY'
+      },
+      "startDate": "01 01 2019",
+      "endDate": "1 1 2020"
+    }, function(start, end, label) {
+          //console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+          var startDate= start.format('YYYY-MM-DD');
+          var endDate = end.format('YYYY-MM-DD');
+          //console.log(start.format('YYYY-MM-DD'));
+          var site = "<?php echo site_url('iuran_wajib/cari_iuran_wajib_by_date') ?>";
+          site+="/"+startDate+'/'+endDate;
+          console.log(site);
+          //location.replace(site);
+
+          $.ajax({url: site, success: function(result){
+            $("#table-body").html(result);
+            $(".uang").each(function(index, value){
+              $(this).html(formatUang($(this).html()));
+            })
+          }});
+      });  
+
+      $("#search-biaya-admin-by-tanggal").daterangepicker({
+      ranges: {
+        'Hari ini': [moment(), moment()],
+        'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        '7 hari terakhir': [moment().subtract(6, 'days'), moment()],
+        '30 hari terakhir': [moment().subtract(29, 'days'), moment()],
+        'Bulan ini': [moment().startOf('month'), moment().endOf('month')],
+        'Bulan lalu': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+      },
+      "alwaysShowCalendars": true,
+      locale: {
+        format: 'DD MMM YYYY'
+      },
+      "startDate": "01 01 2019",
+      "endDate": "1 1 2020"
+    }, function(start, end, label) {
+          //console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+          var startDate= start.format('YYYY-MM-DD');
+          var endDate = end.format('YYYY-MM-DD');
+          //console.log(start.format('YYYY-MM-DD'));
+          var site = "<?php echo site_url('pembiayaan/cari_biaya_admin_by_date') ?>";
+          site+="/"+startDate+'/'+endDate;
+          console.log(site);
+          //location.replace(site);
+
+          $.ajax({url: site, success: function(result){
+            $("#table-body").html(result);
+            $(".uang").each(function(index, value){
+              $(this).html(formatUang($(this).html()));
+            })
+          }});
+      });  
 
     $(document.body).delegate('.hapus-iuran-wajib', 'click', function(){
       console.log(this.id);
       if(confirm("Anda yakin ingin menghapus data iuran wajib?")){
-        $.ajax({url: "<?php echo site_url('proses/hapus_iuran_wajib/')?>"+this.id, success: function(result){
+        $.ajax({url: "<?php echo site_url('iuran_wajib/hapus_iuran_wajib/')?>"+this.id, success: function(result){
           $("#table-body").html(result);
-          $(".uang").html(formatUang($(".uang").html()));
+          $(".uang").each(function(index, value){
+            $(this).html(formatUang($(this).html()));
+          })
         }});
       }
     });
@@ -47,7 +148,7 @@
     $(document.body).delegate('.hapus-pembiayaan', 'click', function(){
       console.log(this.id);
       if(confirm("Anda yakin ingin menghapus data pembiayaan?")){
-        $.ajax({url: "<?php echo site_url('proses/hapus_pembiayaan/')?>"+this.id, success: function(result){
+        $.ajax({url: "<?php echo site_url('pembiayaan/hapus_pembiayaan/')?>"+this.id, success: function(result){
           $("#table-body").html(result);
           //$(".uang").html(formatUang($(".uang").html()));
           $(".uang").each(function(index, value){
@@ -62,7 +163,7 @@
       //console.log(this.value);
       var keyword = convertToURL(this.value);
       console.log(keyword);
-      $.ajax({url: "<?php echo site_url('proses/cari_anggota_aktif/')?>"+keyword, success: function(result){
+      $.ajax({url: "<?php echo site_url('anggota/cari_anggota_aktif/')?>"+keyword, success: function(result){
         $("#table-body").html(result);
       }});
     });
@@ -72,7 +173,7 @@
       //console.log(this.value);
       var keyword = convertToURL(this.value);
       console.log(keyword);
-      $.ajax({url: "<?php echo site_url('proses/cari_pembiayaan/')?>"+keyword, success: function(result){
+      $.ajax({url: "<?php echo site_url('pembiayaan/cari_pembiayaan/')?>"+keyword, success: function(result){
         $("#table-body").html(result);
         $(".uang").each(function(index, value){
           $(this).html(formatUang($(this).html()));
@@ -86,7 +187,7 @@
       //console.log(this.value);
       var keyword = convertToURL(this.value);
       console.log(keyword);
-      $.ajax({url: "<?php echo site_url('proses/cari_anggota_nonaktif/')?>"+keyword, success: function(result){
+      $.ajax({url: "<?php echo site_url('anggota/cari_anggota_nonaktif/')?>"+keyword, success: function(result){
         $("#table-body").html(result);
       }});
     }); 
@@ -96,9 +197,26 @@
       //console.log(this.value);
       var keyword = convertToURL(this.value);
       console.log(keyword);
-      $.ajax({url: "<?php echo site_url('proses/cari_iuran_wajib/')?>"+keyword, success: function(result){
+      $.ajax({url: "<?php echo site_url('iuran_wajib/cari_iuran_wajib/')?>"+keyword, success: function(result){
         $("#table-body").html(result);
-        $(".uang").html(formatUang($(".uang").html()));
+        $(".uang").each(function(index, value){
+            $(this).html(formatUang($(this).html()));
+        })
+        //$(".uang").html(formatUang($(".uang").html()));
+      }});
+    });
+
+    $("#search-biaya-admin").keyup(function(){
+      //$("input").css("background-color", "pink");
+      //console.log(this.value);
+      var keyword = convertToURL(this.value);
+      console.log(keyword);
+      $.ajax({url: "<?php echo site_url('proses/cari_biaya_admin/')?>"+keyword, success: function(result){
+        $("#table-body").html(result);
+        $(".uang").each(function(index, value){
+            $(this).html(formatUang($(this).html()));
+        })
+        //$(".uang").html(formatUang($(".uang").html()));
       }});
     }); 
 
@@ -107,9 +225,11 @@
       //console.log(this.value);
       var keyword = convertToURL(this.value);
       console.log(keyword);
-      $.ajax({url: "<?php echo site_url('proses/cari_iuran_pokok/')?>"+keyword, success: function(result){
+      $.ajax({url: "<?php echo site_url('anggota/cari_iuran_pokok/')?>"+keyword, success: function(result){
         $("#table-body").html(result);
-        $(".uang").html(formatUang($(".uang").html()));
+        $(".uang").each(function(index, value){
+            $(this).html(formatUang($(this).html()));
+        })
       }});
     }); 
 
@@ -118,7 +238,7 @@
       //console.log(this.value);
       var keyword = convertToURL(this.value);
       console.log(keyword);
-      $.ajax({url: "<?php echo site_url('proses/cari_data_ijarah/')?>"+keyword, success: function(result){
+      $.ajax({url: "<?php echo site_url('angsuran/cari_data_ijarah/')?>"+keyword, success: function(result){
         $("#table-body").html(result);
         //$(".uang").html(formatUang($(".uang").html()));
         $(".uang").each(function(index, value){
@@ -132,7 +252,7 @@
       var keyword = convertToURL(this.value);
       console.log(keyword);
       //document.getElementById("nama").value=this.value;
-      $.ajax({url: "<?php echo site_url('proses/cari_anggota_iuran/')?>"+keyword, success: function(result){
+      $.ajax({url: "<?php echo site_url('iuran_wajib/cari_anggota_iuran/')?>"+keyword, success: function(result){
         $("#anggota").html(result);
         //$(".uang").html(formatUang($(".uang").html()));
       }});
@@ -142,7 +262,7 @@
       //console.log("abababa");(
       var keyword = convertToURL(this.value);
       //document.getElementById("nama").value=this.value;
-      $.ajax({url: "<?php echo site_url('proses/cari_anggota_boleh_mendapat_pembiayaan/')?>"+keyword, success: function(result){
+      $.ajax({url: "<?php echo site_url('pembiayaan/cari_anggota_boleh_mendapat_pembiayaan/')?>"+keyword, success: function(result){
         $("#anggota").html(result);
         //$(".uang").html(formatUang($(".uang").html()));
       }});
@@ -152,7 +272,7 @@
       //console.log("abababa");(
       var keyword = convertToURL(this.value);
       //document.getElementById("nama").value=this.value;
-      $.ajax({url: "<?php echo site_url('proses/cari_anggota_angsuran/')?>"+keyword, success: function(result){
+      $.ajax({url: "<?php echo site_url('angsuran/cari_anggota_angsuran/')?>"+keyword, success: function(result){
         $("#anggota").html(result);
         //$(".uang").html(formatUang($(".uang").html()));
       }});
@@ -242,7 +362,7 @@
       //console.log("Keyword "+keyword);
       //console.log("Keyword 1"+keyword1);
       /*
-      $.ajax({url: "<?php echo site_url('proses/cari_nama_anggota/')?>"+keyword, success: function(result){
+      $.ajax({url: "<?php echo site_url('anggota/cari_nama_anggota/')?>"+keyword, success: function(result){
         //$("#anggota").html(result);
         document.getElementById("nama").value=result;
       }});
@@ -264,7 +384,7 @@
       //$("#nama").val="abababab";
       var keyword=this.value.split(" ")[0];
       console.log(keyword);
-      $.ajax({url: "<?php echo site_url('proses/cari_nama_anggota/')?>"+keyword, success: function(result){
+      $.ajax({url: "<?php echo site_url('anggota/cari_nama_anggota/')?>"+keyword, success: function(result){
         //$("#anggota").html(result);
         document.getElementById("nama").value=result;
       }});
@@ -314,28 +434,28 @@
       //$("#nama").val="abababab";
       var keyword=this.value.split(" ")[0];
       console.log(keyword);
-      $.ajax({url: "<?php echo site_url('proses/cari_nama_anggota/')?>"+keyword, success: function(result){
+      $.ajax({url: "<?php echo site_url('anggota/cari_nama_anggota/')?>"+keyword, success: function(result){
         //$("#anggota").html(result);
         document.getElementById("nama").value=result;
         //$("#")
       }});
-      $.ajax({url: "<?php echo site_url('proses/cari_id_pembiayaan/')?>"+keyword, success: function(result){
+      $.ajax({url: "<?php echo site_url('pembiayaan/cari_id_pembiayaan/')?>"+keyword, success: function(result){
         //$("#anggota").html(result);
         console.log("ID biaya: "+result);
         document.getElementById("id-biaya").value=result;
         //$("#")
       }});
-      $.ajax({url: "<?php echo site_url('proses/get_sisa_pembiayaan_by_id_anggota/')?>"+keyword, success: function(result){
+      $.ajax({url: "<?php echo site_url('pembiayaan/get_sisa_pembiayaan_by_id_anggota/')?>"+keyword, success: function(result){
         //$("#anggota").html(result);
         document.getElementById("sisa-pembiayaan").value = formatUangNoCurrency(result);
         //$("#")
       }});
-      $.ajax({url: "<?php echo site_url('proses/cari_pembiayaan_pokok/')?>"+keyword, success: function(result){
+      $.ajax({url: "<?php echo site_url('pembiayaan/cari_pembiayaan_pokok/')?>"+keyword, success: function(result){
         //$("#anggota").html(result);
         document.getElementById("pengembalian-pokok").value=formatUangNoCurrency(result);
         //$("#")
       }});
-      $.ajax({url: "<?php echo site_url('proses/cari_ijarah/')?>"+keyword, success: function(result){
+      $.ajax({url: "<?php echo site_url('angsuran/cari_ijarah/')?>"+keyword, success: function(result){
         //$("#anggota").html(result);
         document.getElementById("ijarah").value=formatUangNoCurrency(result);
         //$("#")

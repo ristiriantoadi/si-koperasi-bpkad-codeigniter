@@ -22,6 +22,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="<?php echo base_url('assets/dist/css/skins/skin-blue.min.css') ?>">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -149,20 +151,69 @@ desired effect
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">SIMPAN PINJAM</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="<?php echo ($halaman == 'data_bidang' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/data_bidang') ?>"><i class="fa fa-fw fa-users"></i><span>Data Bidang</span></a></li>
-        <li class="<?php echo ($halaman == 'data_master_iuran_wajib' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/data_master_iuran_wajib') ?>"><i class="fa fa-fw fa-users"></i><span>Data Master Iuran Wajib</span></a></li> 
-        <li class="<?php echo ($halaman == 'data_master_biaya_admin' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/data_master_biaya_admin') ?>"><i class="fa fa-fw fa-users"></i><span>Data Master Biaya Admin</span></a></li>   
-        <li class="<?php echo ($halaman == 'data_anggota_aktif' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota') ?>"><i class="fa fa-fw fa-users"></i><span>Data Anggota Aktif</span></a></li>
-        <li class="<?php echo ($halaman == 'data_anggota_non_aktif' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/nonaktif') ?>"><i class="fa fa-fw fa-users"></i><span>Data Anggota Nonaktif</span></a></li> 
-        <li class="<?php echo ($halaman == 'iuran_wajib' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/iuran_wajib') ?>"><i class="fa fa-fw fa-money"></i><span>Iuran Wajib</span></a></li> 
-        <li class="<?php echo ($halaman == 'iuran_pokok' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/iuran_pokok') ?>"><i class="fa fa-fw fa-dollar"></i><span>Iuran Pokok</span></a></li>
-        <li class="<?php echo ($halaman == 'ijarah' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/ijarah') ?>"><i class="fa fa-fw fa-money"></i><span>Ijarah</span></a></li> 
-        <li class="<?php echo ($halaman == 'biaya_admin' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/biaya_admin') ?>"><i class="fa fa-fw fa-money"></i><span>Biaya Administrasi</span></a></li> 
-        <li class="<?php echo ($halaman == 'pembiayaan' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/pembiayaan') ?>"><i class="fa fa-fw fa-credit-card"></i><span>Pembiayaan</span></a></li> 
-        <li class="<?php echo ($halaman == 'tambah_anggota' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/tambah_anggota') ?>"><i class="fa fa-fw fa-user-plus"></i><span>Tambah Anggota</span></a></li>
-        <li class="<?php echo ($halaman == 'tambah_iuran_wajib' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/tambah_iuran_wajib') ?>"><i class="fa fa-fw fa-user-plus"></i><span>Tambah Iuran Wajib</span></a></li>
-        <li class="<?php echo ($halaman == 'tambah_pembiayaan' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/tambah_pembiayaan') ?>"><i class="fa fa-fw fa-user-plus"></i><span>Tambah Pembiayaan</span></a></li>
-        <li class="<?php echo ($halaman == 'tambah_angsuran' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/tambah_angsuran') ?>"><i class="fa fa-fw fa-user-plus"></i><span>Pembayaran Angsuran</span></a></li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-share"></i> <span>Data Anggota</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu" style="display: none;">
+            <li class="<?php echo ($halaman == 'data_anggota_aktif' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota') ?>"><i class="fa fa-fw fa-users"></i><span>Data Anggota Aktif</span></a></li>
+            <li class="<?php echo ($halaman == 'data_anggota_non_aktif' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/nonaktif') ?>"><i class="fa fa-fw fa-users"></i><span>Data Anggota Nonaktif</span></a></li> 
+            <li class="<?php echo ($halaman == 'tambah_anggota' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/tambah_anggota') ?>"><i class="fa fa-fw fa-user-plus"></i><span>Tambah Anggota</span></a></li>          
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-share"></i> <span>Data Iuran</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu" style="display: none;">
+            <li class="<?php echo ($halaman == 'iuran_pokok' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/iuran_pokok') ?>"><i class="fa fa-fw fa-dollar"></i><span>Iuran Pokok</span></a></li>
+            <li class="<?php echo ($halaman == 'iuran_wajib' ? 'active': '#') ?>"><a href="<?php echo site_url('iuran_wajib/data_iuran_wajib') ?>"><i class="fa fa-fw fa-money"></i><span>Iuran Wajib</span></a></li> 
+            <li class="<?php echo ($halaman == 'tambah_iuran_wajib' ? 'active': '#') ?>"><a href="<?php echo site_url('iuran_wajib/page_tambah_iuran_wajib') ?>"><i class="fa fa-fw fa-user-plus"></i><span>Tambah Iuran Wajib</span></a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-share"></i> <span>Data Pembiayaan</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu" style="display: none;">
+            <li class="<?php echo ($halaman == 'pembiayaan' ? 'active': '#') ?>"><a href="<?php echo site_url('pembiayaan/data_pembiayaan') ?>"><i class="fa fa-fw fa-credit-card"></i><span>Pembiayaan</span></a></li> 
+            <li class="<?php echo ($halaman == 'tambah_pembiayaan' ? 'active': '#') ?>"><a href="<?php echo site_url('pembiayaan/page_tambah_pembiayaan') ?>"><i class="fa fa-fw fa-user-plus"></i><span>Tambah Pembiayaan</span></a></li>
+            <li class="<?php echo ($halaman == 'biaya_admin' ? 'active': '#') ?>"><a href="<?php echo site_url('pembiayaan/biaya_admin') ?>"><i class="fa fa-fw fa-money"></i><span>Biaya Administrasi</span></a></li> 
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-share"></i> <span>Data Angsuran</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu" style="display: none;">
+            <li class="<?php echo ($halaman == 'ijarah' ? 'active': '#') ?>"><a href="<?php echo site_url('angsuran/ijarah') ?>"><i class="fa fa-fw fa-money"></i><span>Ijarah</span></a></li> 
+            <li class="<?php echo ($halaman == 'tambah_angsuran' ? 'active': '#') ?>"><a href="<?php echo site_url('angsuran/page_tambah_angsuran') ?>"><i class="fa fa-fw fa-user-plus"></i><span>Pembayaran Angsuran</span></a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-share"></i> <span>Master Data</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu" style="display: none;">
+            <li class="<?php echo ($halaman == 'data_master_iuran_wajib' ? 'active': '#') ?>"><a href="<?php echo site_url('master/data_master_iuran_wajib') ?>"><i class="fa fa-fw fa-users"></i><span>Iuran Wajib</span></a></li>
+            <li class="<?php echo ($halaman == 'data_master_biaya_admin' ? 'active': '#') ?>"><a href="<?php echo site_url('master/data_master_biaya_admin') ?>"><i class="fa fa-fw fa-users"></i><span>Biaya Admin</span></a></li>   
+            <li class="<?php echo ($halaman == 'data_bidang' ? 'active': '#') ?>"><a href="<?php echo site_url('master/data_bidang') ?>"><i class="fa fa-fw fa-users"></i><span>Bidang</span></a></li>          </ul>
+        </li>
       </ul>
       <!-- /.sidebar-menu -->
     </section>

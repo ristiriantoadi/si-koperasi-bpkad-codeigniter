@@ -19,7 +19,7 @@
             <div class="col-sm-11">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <form class="form-horizontal col-sm-8" method="post" action="<?php echo site_url('proses/tambah_angsuran')  ?>">
+                        <form class="form-horizontal col-sm-8" method="post" action="<?php echo site_url('angsuran/tambah_angsuran')  ?>">
                             <div class="form-group">
                                 <label class="control-label col-sm-3" for="id_anggota">Id Anggota:</label>
                                 <div class="col-sm-9">

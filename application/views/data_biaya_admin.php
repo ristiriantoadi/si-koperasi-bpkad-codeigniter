@@ -21,6 +21,11 @@
           <div class="panel panel-default">
             <div class="panel-body">
               <div class="row">
+                <div class="pull-right col-sm-3">
+                  <input type="text" class="form-control" id="search-biaya-admin-by-tanggal" placeholder="Cari berdasarkan tanggal">
+                </div>
+              </div>
+              <div class="row">
                 <div class="form-group ">
                   <div class="pull-right col-sm-3 ">
                     <input type="text" class="form-control" id="search-biaya-admin" placeholder="Cari berdasarkan nama" name="no_telepon">
@@ -46,7 +51,7 @@
                         <tr>
                           <td><?php echo $count+1 ?></td>
                           <td><?php echo $data_biaya_admin['nama']?></td>
-                          <td><?php echo $data_biaya_admin['tanggal']?></td>
+                          <td><?php echo $data_biaya_admin['tanggal_transaksi']?></td>
                           <td class="uang"><?php echo $data_biaya_admin['jumlah']?></td>
                           
                         </tr>

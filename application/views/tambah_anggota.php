@@ -20,7 +20,7 @@
       <div class="col-sm-11">
         <div class="panel panel-default">
           <div class="panel-body">
-            <form class="form-horizontal col-sm-8" method="post" action="<?php echo site_url('proses/tambah_anggota')  ?>">
+            <form class="form-horizontal col-sm-8" method="post" action="<?php echo site_url('anggota/proses_tambah_anggota')  ?>">
               <div class="form-group">
                 <label class="control-label col-sm-3" for="id_anggota">Id Anggota:</label>
                 <div class="col-sm-9">
@@ -90,13 +90,13 @@
               <div class="form-group">
                 <label class="control-label col-sm-3" for="iuran">Iuran Pokok:</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="tanggal" name="iuran-pokok" value="Rp. 500.000" readonly="readonly">
+                  <input type="text" class="form-control" id="tanggal" name="iuran-pokok" value="500.000" readonly="readonly">
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-sm-3" for="iuran">Iuran Wajib:</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="tanggal" name="iuran-wajib" value="Rp. 200.000" readonly="readonly">
+                  <input type="text" class="form-control uang-input" id="tanggal" name="jumlah" value="<?php echo $jumlah_iuran_wajib ?>" readonly="readonly">
                 </div>
               </div>
 

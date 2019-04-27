@@ -26,7 +26,7 @@ class Anggota extends CI_Controller {
 		
 	}
 
-	public function index()
+	public function index()//data keseluruhan semua anggota aktif koperasi BPKAD
 	{
 		$this->load->model('Model_anggota');
 		$data = array(
@@ -39,11 +39,11 @@ class Anggota extends CI_Controller {
 		$this->load->view('templates/footer');
 	}
 
-	public function nonaktif(){
+	public function nonaktif(){//data keseluruhan anggota nonaktif BPKAD
 		$this->load->model('Model_anggota');
 		$data = array(
 			'halaman' => 'data_anggota_non_aktif',
-			'anggota'=> $this->Model_anggota->get_data_anggota_non_aktif()
+			'anggota'=> $this->Model_anggota->get_data_anggota_nonaktif()
 		);
 		//print_r($data['anggota']);
 		//exit();
@@ -52,26 +52,30 @@ class Anggota extends CI_Controller {
 		$this->load->view('templates/footer');
 	}
 
-	public function data($id_anggota)
+	public function data($id_anggota)//data individu anggota
 	{
 		$this->load->model('Model_anggota');
+		$this->load->model('Model_angsuran');
+		$this->load->model('Model_pembiayaan');
+		
+		$this->load->model('Model_iuran_wajib');
 		$data = array(
 			'halaman' => 'data_anggota_aktif',
 			'anggota'=> $this->Model_anggota->get_data_anggota($id_anggota)
 		);
 		//$data['sisa_pembia']
-		$data['total_iuran_wajib']=$this->Model_anggota->get_total_iuran_wajib($id_anggota);
+		$data['total_iuran_wajib']=$this->Model_iuran_wajib->get_total_iuran_wajib($id_anggota);
 		//$data['pembiayaan'] = $this->Model_anggota->
 		//$data['sisa_pembiayaan']=$this->Model_anggota->get_sisa_pembiayaan($id_anggota);
 
 		//$pembiayaan = $this->Model_anggota->get_sisa_pembiayaan($id_anggota);
-		$pembiayaan  = $this->Model_anggota->get_pembiayaan($id_anggota);
+		$pembiayaan  = $this->Model_pembiayaan->get_pembiayaan($id_anggota);
 		//print_r($pembiayaan);
 		//exit();
 		if(!empty($pembiayaan)){
 			//echo print_r($pembiayaan);
 			//exit();
-			$angsuran = $this->Model_anggota->get_total_angsuran_by_id_pembiayaan($pembiayaan['id_pembiayaan']);
+			$angsuran = $this->Model_angsuran->get_total_angsuran_by_id_pembiayaan($pembiayaan['id_pembiayaan']);
 			$data['sisa_pembiayaan'] = $pembiayaan['jumlah']-$angsuran;
 			//echo $data['sisa_pembiayaan'];
 			//exit();
@@ -95,69 +99,14 @@ class Anggota extends CI_Controller {
 		$this->load->view('templates/footer');
 	}
 
-	public function data_bidang()
-	{
-		$this->load->model('Model_anggota');
-		$data = array(
-			'halaman' => 'data_bidang',
-			'bidang'=> $this->Model_anggota->get_data_bidang()
-		);
-		$this->load->view('templates/header', $data);
-		$this->load->view('edit_data_bidang', $data);
-		$this->load->view('templates/footer');
-	}
-
-	public function data_master_iuran_wajib()
-	{
-		$this->load->model('Model_anggota');
-		$data = array(
-			'halaman' => 'data_master_iuran_wajib',
-			'jumlah_iuran_wajib'=> $this->Model_anggota->get_data_master_iuran_wajib()
-		);
-		$this->load->view('templates/header', $data);
-		$this->load->view('edit_data_master_iuran_wajib', $data);
-		$this->load->view('templates/footer');
-	}
-
-	public function data_master_biaya_admin()
-	{
-		$this->load->model('Model_anggota');
-		$data = array(
-			'halaman' => 'data_master_biaya_admin',
-			'jumlah_biaya_admin'=> $this->Model_anggota->get_data_master_biaya_admin()
-		);
-		$this->load->view('templates/header', $data);
-		$this->load->view('edit_data_master_biaya_admin', $data);
-		$this->load->view('templates/footer');
-	}
-
-
-
-	public function data_angsuran($id_pembiayaan)
-	{
-		$this->load->model('Model_anggota');
-		$data = array(
-			'halaman' => 'data_angsuran',
-			'angsuran'=> $this->Model_anggota->get_data_angsuran($id_pembiayaan)
-		);
-		//$data['sisa_pembia']
-		//$data['total_angsuran']=$this->Model_anggota->get_total_angsuran($id_anggota);
-		//$data['sisa_pembiayaan']=$this->Model_anggota->get_sisa_pembiayaan($id_anggota);
-		//echo $data['sisa_pembiayaan'];
-		//exit();
-		$data['pembiayaan'] = $this->Model_anggota->get_jumlah_pembiayaan($id_pembiayaan);
-
-		$this->load->view('templates/header', $data);
-		$this->load->view('data_angsuran', $data);
-		$this->load->view('templates/footer');
-	}
-
 	public function tambah_anggota(){
 		$this->load->model('Model_anggota');
+		$this->load->model('Model_master');
 		
 		$data = array(
 			'halaman' => 'tambah_anggota',
-			'bidang'=> $this->Model_anggota->get_data_bidang()
+			'bidang'=> $this->Model_anggota->get_data_bidang(),
+			'jumlah_iuran_wajib' => $this->Model_master->get_data_master_iuran_wajib()
 		);
 
 		$this->db->select('*');
@@ -179,6 +128,19 @@ class Anggota extends CI_Controller {
 
 	}
 
+	public function proses_tambah_anggota(){
+		$this->load->model('Model_anggota');
+		//echo $this->input->post('anggota');
+		if($this->Model_anggota->tambah_anggota()){
+			//echo "sukses";
+			$this->load->helper('url'); 
+			redirect(site_url('anggota'));
+		}
+		else echo "gagal";
+
+	}
+
+
 	public function edit_anggota($id_anggota){
 		$this->load->model('Model_anggota');
 		
@@ -192,6 +154,39 @@ class Anggota extends CI_Controller {
 		$this->load->view('templates/footer');
 	}
 	
+	public function cari_iuran_pokok_by_date($tanggal_awal, $tanggal_akhir){
+		$this->load->model('Model_anggota');
+		//echo $this->input->post('anggota');
+		$data = $this->Model_anggota->cari_iuran_pokok_by_date($tanggal_awal, $tanggal_akhir);
+		
+		$text="";
+		$count=0;
+		$total_iuran_pokok=0;  	
+		foreach ($data as $data_iuran_pokok):
+
+				$text.='<tr>
+              		<td>'.($count+1).'</td>
+                  <td>'.$data_iuran_pokok['nama'].'</td>
+                  <td>'.$data_iuran_pokok['tanggal'].'</td>
+                  <td class="uang">'.$data_iuran_pokok['iuran_pokok'].'</td>
+                  
+								</tr>';
+				$count++;
+				$total_iuran_pokok += (int) $data_iuran_pokok['iuran_pokok'];
+
+
+			endforeach;
+			$count = $count*200000;
+			$text.='<tr>
+								<td colspan="3"><b>Total Jumlah</b></td>
+								<td class="uang">'.$total_iuran_pokok.'</td>
+							</tr>';
+			echo $text;
+			//exit();
+			return $text;
+		
+	}
+
 	public function iuran_pokok($id_anggota=null){
 		$this->load->model('Model_anggota');
 		
@@ -199,6 +194,7 @@ class Anggota extends CI_Controller {
 			'halaman' => 'iuran_pokok',
 			'iuran_pokok' => $this->Model_anggota->get_data_iuran_pokok($id_anggota)
 		);
+		
 		/*
 		if($id_anggota==null){
 			$this->load->view('templates/header', $data);
@@ -219,119 +215,180 @@ class Anggota extends CI_Controller {
 
 	}
 
-	
-	public function iuran_wajib($id_anggota=null){
+	public function cari_nama_anggota($cari=null){
 		$this->load->model('Model_anggota');
-		
-		$data = array(
-			'halaman' => 'iuran_wajib',
-			'iuran_wajib'=>$this->Model_anggota->get_iuran_wajib($id_anggota),
-			'total_iuran_wajib'=>$this->Model_anggota->get_total_iuran_wajib($id_anggota)
-		);
-
-		//print_r($data['iuran_wajib']);
-		//exit();
-
-		$this->load->view('templates/header', $data);
-		$this->load->view('iuran_wajib', $data);
-		$this->load->view('templates/footer');
-
+		//echo $this->input->post('anggota');
+		if($cari==null)
+			return "";
+		else $data = $this->Model_anggota->cari_nama_anggota($cari);
+		$text="";
+			//foreach ($data as $data_anggota):
+				//$text=$data_anggota['nama'];
+			//endforeach;
+		$text = $data['nama'];
+			echo $text;
+			//exit();
+			return $text;
 	}
 
-	public function ijarah($id_anggota=null){
+	public function nonaktifkan_anggota($id_anggota){
 		$this->load->model('Model_anggota');
-		
-		$data = array(
-			'halaman' => 'ijarah',
-			'ijarah'=>$this->Model_anggota->get_ijarah($id_anggota),
-			'total_ijarah' =>$this->Model_anggota->get_total_ijarah($id_anggota)
-		);
-
-		//print_r($data['iuran_wajib']);
-		//exit();
-
-		$this->load->view('templates/header', $data);
-		$this->load->view('data_ijarah', $data);
-		$this->load->view('templates/footer');
-
-	}
-	
-	public function biaya_admin($id_anggota=null){
-		$this->load->model('Model_anggota');
-		
-		$data = array(
-			'halaman' => 'biaya_admin',
-			//'ijarah'=>$this->Model_anggota->get_ijarah($id_anggota),
-			//'total_ijarah' =>$this->Model_anggota->get_total_ijarah($id_anggota)
-			//'biaya_admin'
-			'biaya_admin'=>$this->Model_anggota->get_biaya_admin($id_anggota),
-			'total_biaya_admin'=>$this->Model_anggota->get_total_biaya_admin($id_anggota)
-		);
-
-		//print_r($data['iuran_wajib']);
-		//exit();
-
-		$this->load->view('templates/header', $data);
-		$this->load->view('data_biaya_admin', $data);
-		$this->load->view('templates/footer');
-
+		if($this->Model_anggota->nonaktifkan_anggota($id_anggota)){
+			//echo "sukses";
+			$data = $this->Model_anggota->get_data_anggota();
+			$text="";
+			foreach ($data as $data_anggota):
+				$text.='
+				<tr>
+					<td>'.$data_anggota['id_anggota'].'</td>
+					<td>'.$data_anggota['nama'].'</td>
+					<td>'.$data_anggota['no_telepon'].'</td>
+					<td>'.$data_anggota['nama_bidang'].'</td>
+					<td>'.$data_anggota['alamat'].'</td>
+					<td>'.$data_anggota['tanggal'].'</td>
+					<td>
+					<div class="btn-group btn-group-sm">
+						<button type="button" class="btn btn-info">
+						<i class="fa fa-fw fa-info"></i>Lihat selengkapnya</button>
+						<button type="button" class="btn btn-danger hapus" id="'.$data_anggota['id_anggota'].'">
+						<i class="fa fa-fw fa-trash-o"></i>Nonaktif</button>
+					</div>
+					</td>
+			 	 </tr>';
+			endforeach;
+			echo $text;
+			//exit();
+			return $text;
+		}
+		else echo "gagal";
 	}
 
-
-	public function pembiayaan($id_anggota=null){
+	public function hapus_anggota($id_anggota){
 		$this->load->model('Model_anggota');
-		$data = array(
-			'halaman' => 'pembiayaan',
-			'pembiayaan'=>$this->Model_anggota->get_semua_pembiayaan_by_id_anggota($id_anggota)
-		);
-
-		//print_r($data['iuran_wajib']);
-		//exit();
-
-		$this->load->view('templates/header', $data);
-		$this->load->view('data_pembiayaan', $data);
-		$this->load->view('templates/footer');
-
+		//echo $this->input->post('anggota');
+		if($this->Model_anggota->hapus_anggota($id_anggota)){
+			//echo "sukses";
+			$data = $this->Model_anggota->get_data_anggota();
+			$text="";
+			foreach ($data as $data_anggota):
+				$text.='
+				<tr>
+					<td>'.$data_anggota['id_anggota'].'</td>
+					<td>'.$data_anggota['nama'].'</td>
+					<td>'.$data_anggota['no_telepon'].'</td>
+					<td>'.$data_anggota['bidang'].'</td>
+					<td>'.$data_anggota['alamat'].'</td>
+					<td>'.$data_anggota['tanggal'].'</td>
+					<td>
+					<div class="btn-group btn-group-sm">
+						<button type="button" class="btn btn-info">
+						<i class="fa fa-fw fa-info"></i>Lihat selengkapnya</button>
+						<button type="button" class="btn btn-danger hapus" id="'.$data_anggota['id_anggota'].'">
+						<i class="fa fa-fw fa-trash-o"></i>Hapus</button>
+					</div>
+					</td>
+			 	 </tr>';
+			endforeach;
+			echo $text;
+			//exit();
+			return $text;
+		}
+		else echo "gagal";
 	}
-	
 
-
-	public function tambah_iuran_wajib(){
+	public function cari_anggota_aktif($cari=null){
 		$this->load->model('Model_anggota');
-		
-		$data = array(
-			'halaman' => 'tambah_iuran_wajib',
-			'jumlah_iuran_wajib' => $this->Model_anggota->get_data_master_iuran_wajib()
-		);
-
-		$this->load->view('templates/header', $data);
-		$this->load->view('tambah_iuran_wajib', $data);
-		$this->load->view('templates/footer');
-
+		//echo $this->input->post('anggota');
+		if($cari==null)
+			$data=$this->Model_anggota->get_data_anggota();
+		else $data = $this->Model_anggota->cari_anggota_aktif($cari);
+		$text="";
+			foreach ($data as $data_anggota):
+				$text.='
+				<tr>
+					<td>'.$data_anggota['id_anggota'].'</td>
+					<td>'.$data_anggota['nama'].'</td>
+					<td>'.$data_anggota['no_telepon'].'</td>
+					<td>'.$data_anggota['nama_bidang'].'</td>
+					<td>'.$data_anggota['alamat'].'</td>
+					<td>'.$data_anggota['tanggal'].'</td>
+					<td>
+					<div class="btn-group btn-group-sm">
+                            <a href="'.site_url('anggota/data/'.$data_anggota['id_anggota']).'" class="btn btn-info">
+                              <i class="fa fa-fw fa-info"></i>Lihat selengkapnya</a>
+                            <button type="button" class="btn btn-danger hapus" id="'.$data_anggota['id_anggota'].'">
+                              <i class="fa fa-fw fa-trash-o"></i>Nonaktif</button>
+                          </div>
+					</td>
+			 	 </tr>';
+			endforeach;
+			echo $text;
+			//exit();
+			return $text;
 	}
 
-	public function tambah_pembiayaan(){
+	public function cari_anggota_nonaktif($cari=null){
 		$this->load->model('Model_anggota');
-		
-		$data = array(
-			'halaman' => 'tambah_pembiayaan',
-			'biaya_admin' => $this->Model_anggota->get_data_master_biaya_admin()
-		);
-
-		$this->load->view('templates/header', $data);
-		$this->load->view('tambah_pembiayaan', $data);
-		$this->load->view('templates/footer');
-
+		//echo $this->input->post('anggota');
+		if($cari==null)
+			$data=$this->Model_anggota->get_data_anggota_non_aktif();
+		else $data = $this->Model_anggota->cari_anggota_non_aktif($cari);
+		$text="";
+			foreach ($data as $data_anggota):
+				$text.='
+				<tr>
+					<td>'.$data_anggota['id_anggota'].'</td>
+					<td>'.$data_anggota['nama'].'</td>
+					<td>'.$data_anggota['no_telepon'].'</td>
+					<td>'.$data_anggota['nama_bidang'].'</td>
+					<td>'.$data_anggota['alamat'].'</td>
+					<td>'.$data_anggota['tanggal'].'</td>
+					<td>
+						<div class="btn-group btn-group-sm">
+                            <a href="'.site_url('anggota/data/'.$data_anggota['id_anggota']).'" class="btn btn-info">
+                              <i class="fa fa-fw fa-info"></i>Lihat selengkapnya</a>
+          	</div>
+					</td>
+			 	 </tr>';
+			endforeach;
+			echo $text;
+			//exit();
+			return $text;
 	}
-	public function tambah_angsuran(){
-		$data = array(
-			'halaman' => 'tambah_angsuran'
-		);
 
-		$this->load->view('templates/header', $data);
-		$this->load->view('tambah_angsuran', $data);
-		$this->load->view('templates/footer');
+	public function cari_iuran_pokok($cari=null){
+		$this->load->model('Model_anggota');
+		$cari = str_replace('-',' ',$cari);
+		//echo $this->input->post('anggota');
+		//if($cari==null)
+			//$data=$this->Model_anggota->get_data_anggota($cari)
+		//else 
+		$data = $this->Model_anggota->cari_iuran_pokok($cari);
+		$text="";
+		$count=0;
+		$total_iuran_pokok=0;  	
+		foreach ($data as $data_iuran_pokok):
 
+				$text.='<tr>
+              		<td>'.($count+1).'</td>
+                  <td>'.$data_iuran_pokok['nama'].'</td>
+                  <td>'.$data_iuran_pokok['tanggal'].'</td>
+                  <td class="uang">'.$data_iuran_pokok['iuran_pokok'].'</td>
+                  
+								</tr>';
+				$count++;
+				$total_iuran_pokok += (int) $data_iuran_pokok['iuran_pokok'];
+
+
+			endforeach;
+			$count = $count*200000;
+			$text.='<tr>
+								<td colspan="3"><b>Total Jumlah</b></td>
+								<td class="uang">'.$total_iuran_pokok.'</td>
+							</tr>';
+			echo $text;
+			//exit();
+			return $text;
 	}
 
 	public function logout(){

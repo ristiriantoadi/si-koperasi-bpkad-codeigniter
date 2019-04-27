@@ -31,40 +31,6 @@ class Proses extends CI_Controller {
 
 	}
 
-	public function tambah_pembiayaan(){
-		$this->load->model('Model_anggota');
-		if($this->Model_anggota->tambah_pembiayaan()){
-			redirect(site_url('anggota/pembiayaan'));
-		}else echo "gagal";
-	}
-
-	public function tambah_angsuran(){
-		$this->load->model('Model_anggota');
-		
-		if($this->Model_anggota->tambah_angsuran()){
-			if($this->Model_anggota->tambah_ijarah()){
-				if($this->cek_lunas($this->input->post('id_pembiayaan'))){
-					//return "lunas";
-				}
-				//else return "belum lunas";
-				//exit();
-				redirect(site_url('anggota/pembiayaan'));
-			}
-		}else echo "gagal";
-	}
-
-	public function tambah_iuran_wajib(){
-		$this->load->model('Model_anggota');
-		//echo $this->input->post('anggota');
-		if($this->Model_anggota->tambah_iuran_wajib()){
-			//echo "sukses";
-			$this->load->helper('url'); 
-			redirect(site_url('anggota/iuran_wajib'));
-		}
-		else echo "gagal";
-
-	}
-
 	public function edit_anggota(){
 		$this->load->model('Model_anggota');
 		//echo $this->input->post('id-anggota');
@@ -144,42 +110,6 @@ class Proses extends CI_Controller {
 
 	}
 
-	public function cari_pembiayaan($cari=null){
-		$this->load->model('Model_anggota');
-		//echo $this->input->post('anggota');
-		if($cari==null)
-			$data=$this->Model_anggota->get_pembiayaan();
-		else $data = $this->Model_anggota->cari_pembiayaan($cari);
-		$text="";
-		$count=0;
-		foreach ($data as $data_pembiayaan):
-				$count++;
-				$text.='
-				<tr>
-                        <td>'.$count.'</td>
-                        <td>'.$data_pembiayaan['nama'].'</td>
-                        <td class="uang">'.$data_pembiayaan['jumlah'].'</td>
-                        <td>'.$data_pembiayaan['jangka_waktu'].' bulan</td>
-                        <td class="uang">'.$data_pembiayaan['ijarah'].'</td>
-                        <td class="uang">'.$data_pembiayaan['pengembalian_pokok'].'</td>         
-                        <td>'.$data_pembiayaan['tanggal'].'</td>
-                        <td>'.$data_pembiayaan['keterangan'].'</td>
-                        <td class="'.($data_pembiayaan['status_pembiayaan'] == "Belum Lunas" ? 'belum-lunas':'lunas').'">'.$data_pembiayaan['status_pembiayaan'].'</td>
-                        <td>
-                          <div class="btn-group btn-group-sm">
-                            <a href="'.site_url('anggota/data_angsuran/'.$data_pembiayaan['id_pembiayaan']).'" class="btn btn-info">
-                              <i class="fa fa-fw fa-info"></i>Lihat detail angsuran</a>
-                            <button type="button" class="btn btn-danger hapus-pembiayaan" id="'.$data_pembiayaan['id_pembiayaan'].'">
-                              <i class="fa fa-fw fa-trash-o"></i>Hapus</button>
-                          </div>
-                        </td>
-                      </tr>';
-			endforeach;
-			echo $text;
-			//exit();
-			return $text;
-	}
-
 	public function cari_anggota_aktif($cari=null){
 		$this->load->model('Model_anggota');
 		//echo $this->input->post('anggota');
@@ -240,55 +170,17 @@ class Proses extends CI_Controller {
 			return $text;
 	}
 
-	public function cari_iuran_wajib($cari=null){
-		$this->load->model('Model_anggota');
-		//echo $this->input->post('anggota');
-		if($cari==null){
-			$data=$this->Model_anggota->get_iuran_wajib();
-			$total_iuran_wajib = $this->Model_anggota->get_total_iuran_wajib();
-		}
-		else {
-			$data = $this->Model_anggota->cari_iuran_wajib($cari);
-			$total_iuran_wajib = $this->Model_anggota->get_total_iuran_wajib_by_pencarian($cari);
-
-		}
-		$text="";
-		$count=0;  	
-		foreach ($data as $data_iuran):
-
-				$text.='<tr>
-              		<td>'.($count+1).'</td>
-                  <td>'.$data_iuran['nama'].'</td>
-                  <td>'.$data_iuran['tanggal_transaksi'].'</td>
-                  <td class="uang">'.$data_iuran['jumlah_iuran_wajib'].'</td>
-                  <td>
-                  	<div class="btn-group btn-group-sm">
-                    	<button type="button" class="btn btn-danger hapus-iuran-wajib" id="'.$data_iuran['id_iuran_wajib'].'">
-                                <i class="fa fa-fw fa-trash-o"></i>Hapus</button>
-                            </div>
-                          </td>
-								</tr>';
-				$count++;
-			endforeach;
-			$count = $count*200000;
-			$text.='<tr>
-								<td colspan="3"><b>Total Jumlah</b></td>
-								<td class="uang">'.$total_iuran_wajib.'</td>
-							</tr>';
-			echo $text;
-			//exit();
-			return $text;
-	}
-
 	public function cari_iuran_pokok($cari=null){
 		$this->load->model('Model_anggota');
+		$cari = str_replace('-',' ',$cari);
 		//echo $this->input->post('anggota');
 		//if($cari==null)
 			//$data=$this->Model_anggota->get_data_anggota($cari)
 		//else 
 		$data = $this->Model_anggota->cari_iuran_pokok($cari);
 		$text="";
-		$count=0;  	
+		$count=0;
+		$total_iuran_pokok=0;  	
 		foreach ($data as $data_iuran_pokok):
 
 				$text.='<tr>
@@ -299,256 +191,42 @@ class Proses extends CI_Controller {
                   
 								</tr>';
 				$count++;
+				$total_iuran_pokok += (int) $data_iuran_pokok['iuran_pokok'];
+
+
 			endforeach;
 			$count = $count*200000;
 			$text.='<tr>
 								<td colspan="3"><b>Total Jumlah</b></td>
-								<td class="uang">'.$count.'</td>
+								<td class="uang">'.$total_iuran_pokok.'</td>
 							</tr>';
 			echo $text;
 			//exit();
 			return $text;
 	}
-
-	public function cari_data_ijarah($cari=null){
-		$this->load->model('Model_anggota');
-		//echo $this->input->post('anggota');
-		//if($cari==null)
-			//$data=$this->Model_anggota->get_data_anggota($cari)
-		//else 
-		$data = $this->Model_anggota->cari_ijarah($cari);
-		$total_ijarah = $this->Model_anggota->get_total_ijarah_by_keyword($cari);
-		$text="";
-		$count=0;  	
-		foreach ($data as $data_ijarah):
-				$count++;
-				$text.='<tr>
-              		<td>'.($count).'</td>
-                  <td>'.$data_ijarah['nama'].'</td>
-                  <td>'.$data_ijarah['tanggal'].'</td>
-                  <td class="uang">'.$data_ijarah['jumlah'].'</td>
-                  
-								</tr>';
-				//$count++;
-			endforeach;
-			//$count = $count*200000;
-			$text.='<tr>
-								<td colspan="3"><b>Total Jumlah</b></td>
-								<td class="uang">'.$total_ijarah.'</td>
-							</tr>';
-			echo $text;
-			//exit();
-			return $text;
-	}
-
-	public function hapus_pembiayaan($id_pembiayaan){
-		$this->load->model('Model_anggota');
-		//echo $this->input->post('anggota');
-		if($this->Model_anggota->hapus_pembiayaan($id_pembiayaan)){
-			//echo "sukses";
-			$data = $this->Model_anggota->get_pembiayaan();
-			$text="";
-		$count=0;  	
-		foreach ($data as $data_pembiayaan):
-				$count++;
-				$text.='
-				<tr>
-                        <td>'.$count.'</td>
-                        <td>'.$data_pembiayaan['nama'].'</td>
-                        <td class="uang">'.$data_pembiayaan['jumlah'].'</td>
-                        <td>'.$data_pembiayaan['jangka_waktu'].' bulan</td>
-                        <td class="uang">'.$data_pembiayaan['ijarah'].'</td>
-                        <td class="uang">'.$data_pembiayaan['pengembalian_pokok'].'</td>         
-                        <td>'.$data_pembiayaan['tanggal'].'</td>
-                        <td>'.$data_pembiayaan['keterangan'].'</td>
-                        <td class="'.($data_pembiayaan['status_pembiayaan'] == "Belum Lunas" ? 'belum-lunas':'lunas').'">'.$data_pembiayaan['status_pembiayaan'].'</td>
-                        <td>
-                          <div class="btn-group btn-group-sm">
-                            <a href="'.site_url('anggota/data_angsuran/'.$data_pembiayaan['id_pembiayaan']).'" class="btn btn-info">
-                              <i class="fa fa-fw fa-info"></i>Lihat detail angsuran</a>
-                            <button type="button" class="btn btn-danger hapus-pembiayaan" id="'.$data_pembiayaan['id_pembiayaan'].'">
-                              <i class="fa fa-fw fa-trash-o"></i>Hapus</button>
-                          </div>
-                        </td>
-                      </tr>';
-				//$count++;
-			endforeach;
-			echo $text;
-			//exit();
-			return $text;
-		}
-		else echo "gagal";
-
-	}
-
-	public function hapus_angsuran($id_angsuran, $id_pembiayaan){
-		$this->load->model('Model_anggota');
-		$this->Model_anggota->hapus_angsuran($id_angsuran);
-		redirect(site_url('anggota/data_angsuran/'.$id_pembiayaan));
-	}
-
-	public function hapus_iuran_wajib($id_anggota){
-		$this->load->model('Model_anggota');
-		//echo $this->input->post('anggota');
-		if($this->Model_anggota->hapus_iuran_wajib($id_anggota)){
-			//echo "sukses";
-			$data = $this->Model_anggota->get_iuran_wajib();
-			$text="";
-		$count=0;  	
-		foreach ($data as $data_iuran):
-				$count++;
-				$text.='<tr>
-              		<td>'.($count).'</td>
-                  <td>'.$data_iuran['nama'].'</td>
-                  <td>'.$data_iuran['tanggal_transaksi'].'</td>
-                  <td>Rp. 200.000</td>
-                  <td>
-                  	<div class="btn-group btn-group-sm">
-                    	<button type="button" class="btn btn-danger hapus-iuran-wajib" id="'.$data_iuran['id_iuran_wajib'].'">
-                                <i class="fa fa-fw fa-trash-o"></i>Hapus</button>
-                            </div>
-                          </td>
-								</tr>';
-				//$count++;
-			endforeach;
-			$count = $count*200000;
-			$text.='<tr>
-								<td colspan="3"><b>Total Jumlah</b></td>
-								<td class="uang">'.$count.'</td>
-							</tr>';
-			echo $text;
-			//exit();
-			return $text;
-		}
-		else echo "gagal";
-
-	}
-
-	public function cari_anggota_boleh_mendapat_pembiayaan($cari=null){
-		$this->load->model('Model_anggota');
-		//echo $this->input->post('anggota');
-		//if($cari==null){
-			//$data = $this->Model_anggota->cari_anggota_boleh_mendapat_pembiayaan()
-		//}
-			//$data=$this->Model_anggota->get_data_anggota();
-		//else $data = $this->Model_anggota->cari_anggota($cari);
-		$data = $this->Model_anggota->cari_anggota_boleh_mendapat_pembiayaan($cari);
-		//print_r($data);
-		//exit();
-		$text="";
-		$text1="";
-			foreach ($data as $data_anggota):
-				$text.='
-					<option value="'.$data_anggota['id_anggota'].' '.$data_anggota['nama'].'">
-
-				';
-				//$text1 .=$data_anggota['id_anggota'].' '.$data_anggota['nama'].'\n'; 
-				//echo $data_anggota['id_anggota'];
-				//echo " ";
-			endforeach;
-			echo $text;
-			//echo "y";
-			//exit();
-			return $text;
-	}
-
-	public function cari_anggota_iuran($cari=null){
-		$this->load->model('Model_anggota');
-		//echo $this->input->post('anggota');
-		if($cari==null)
-			$data=$this->Model_anggota->get_data_anggota();
-		else $data = $this->Model_anggota->cari_anggota_aktif($cari);
-		$text="";
-			foreach ($data as $data_anggota):
-				$text.='
-					<option value="'.$data_anggota['id_anggota'].' '.$data_anggota['nama'].'">
-
-				';
-			endforeach;
-			echo $text;
-			//exit();
-			return $text;
-	}
-
-	public function cari_anggota_angsuran($cari=null){
-		$this->load->model('Model_anggota');
-		//echo $this->input->post('anggota');
-		if($cari==null)
-			$data=$this->Model_anggota->get_data_anggota_pembiayaan();
-		else $data = $this->Model_anggota->cari_anggota_pembiayaan($cari);
-		$text="";
-			foreach ($data as $data_anggota):
-				$text.='
-					<option value="'.$data_anggota['id_anggota'].' '.$data_anggota['nama'].'">
-
-				';
-			endforeach;
-			echo $text;
-			//exit();
-			return $text;
-	}
-	public function cari_nama_anggota($cari=null){
-		$this->load->model('Model_anggota');
-		//echo $this->input->post('anggota');
-		if($cari==null)
-			return "";
-		else $data = $this->Model_anggota->cari_nama_anggota($cari);
-		$text="";
-			//foreach ($data as $data_anggota):
-				//$text=$data_anggota['nama'];
-			//endforeach;
-		$text = $data['nama'];
-			echo $text;
-			//exit();
-			return $text;
-	}
-
-	public function cari_jumlah_pembiayaan($cari=null){
-		$this->load->model('Model_anggota');
-		//echo $this->input->post('anggota');
-		if($cari==null)
-			return "";
-		else $data = $this->Model_anggota->get_data_pembiayaan_individu($cari);
-		$text="";
-			//foreach ($data as $data_anggota):
-				//$text=$data_anggota['nama'];
-			//endforeach;
-		$text = $data['jumlah'];
-			echo $text;
-			//exit();
-			return $text;
-	}
-
+	
 	public function edit_data_bidang(){
-		$this->load->model('Model_anggota');
+		$this->load->model('Model_master');
 		print_r($this->input->post('nama_bidang'));
 		//echo count($this->input->post('nama_bidang'));
 		//exit();
-		$data = array();
-		for($i = 0;$i<count($this->input->post('nama_bidang'));$i++){
-			$data[$i]['id_bidang'] = ($i+1);
-			$data[$i]['nama_bidang'] = $this->input->post('nama_bidang')[$i];
-		}
-		$this->db->query('TRUNCATE bidang');
-		$this->db->insert_batch('bidang', $data);
-		redirect(site_url('anggota'));
-		
+		if($this->Model_master->edit_data_bidang())
+			redirect(site_url('anggota'));
+		else echo "gagal";
 	}
 
 	public function edit_data_master_iuran_wajib(){
-		$this->load->model('Model_anggota');
+		$this->load->model('Model_master');
 		//$data
 		//$this->db->insert()
-		$data = array(
-			'jumlah_iuran_wajib' => str_replace(array("Rp. ","."),'',$this->input->post("jumlah_iuran_wajib"))
-		);
-
-		$this->db->replace('master_iuran_wajib', $data);
-		redirect(site_url('anggota'));
+	
+		if($this->Model_master->edit_data_master_iuran_wajib())
+			redirect(site_url('anggota'));
+		else echo "gagal";
 	}
 
 	public function edit_data_master_biaya_admin(){
-		$this->load->model('Model_anggota');
+		$this->load->model('Model_master');
 		//$data
 		//$this->db->insert()
 		/*
@@ -556,52 +234,17 @@ class Proses extends CI_Controller {
 			'jumlah_iuran_wajib' => str_replace(array("Rp. ","."),'',$this->input->post("jumlah_iuran_wajib"))
 		);
 		*/
-
-		$jumlah_biaya_admin = str_replace(array("Rp. ","."),'',$this->input->post("jumlah_biaya_admin"));
-
-		//$this->db->replace('master_iuran_wajib', $data);
-		$this->db->query("UPDATE master_biaya_admin SET jumlah_biaya_admin=$jumlah_biaya_admin");
-		redirect(site_url('anggota'));
+		if($this->Model_master->edit_data_master_biaya_admin())
+			redirect(site_url('anggota'));
+		else echo "gagal";
 	}
 
-	public function cari_id_pembiayaan($cari=null){
-		$this->load->model('Model_anggota');
+	public function cari_ijarah($cari=null){//apa gunanya ini? bukan pencarian ijarah yg jelas
+		$this->load->model('Model_pembiayaan');
 		//echo $this->input->post('anggota');
 		if($cari==null)
 			return "";
-		else $data = $this->Model_anggota->get_data_pembiayaan_individu($cari);
-		$text="";
-			//foreach ($data as $data_anggota):
-				//$text=$data_anggota['nama'];
-			//endforeach;
-		$text = $data['id_pembiayaan'];
-			echo $text;
-			//exit();
-			return $text;
-	}
-
-	public function cari_pembiayaan_pokok($cari=null){
-		$this->load->model('Model_anggota');
-		//echo $this->input->post('anggota');
-		if($cari==null)
-			return "";
-		else $data = $this->Model_anggota->get_data_pembiayaan_individu($cari);
-		$text="";
-			//foreach ($data as $data_anggota):
-				//$text=$data_anggota['nama'];
-			//endforeach;
-		$text = $data['pengembalian_pokok'];
-			echo $text;
-			//exit();
-			return $text;
-	}
-
-	public function cari_ijarah($cari=null){
-		$this->load->model('Model_anggota');
-		//echo $this->input->post('anggota');
-		if($cari==null)
-			return "";
-		else $data = $this->Model_anggota->get_data_pembiayaan_individu($cari);
+		else $data = $this->Model_pembiayaan->get_data_pembiayaan_individu($cari);
 		$text="";
 			//foreach ($data as $data_anggota):
 				//$text=$data_anggota['nama'];
@@ -614,32 +257,27 @@ class Proses extends CI_Controller {
 
 	public function cek_lunas($id_pembiayaan){
 		$this->load->model('Model_anggota');
+		$this->load->model('Model_angsuran');
+		$this->load->model('Model_pembiayaan');
 		//echo "yes";
 		//exit();
-		if($this->Model_anggota->is_lunas($id_pembiayaan)){
+		if($this->Model_pembiayaan->is_lunas($id_pembiayaan)){
 			return true;
 		}
 		else{
 			//echo "yes";
 			//exit();
-			$total_angsuran = $this->Model_anggota->get_total_angsuran_by_id_pembiayaan($id_pembiayaan);
-			$jumlah_pembiayaan = $this->Model_anggota->get_pembiayaan_by_id_pembiayaan($id_pembiayaan);
+			$total_angsuran = $this->Model_angsuran->get_total_angsuran_by_id_pembiayaan($id_pembiayaan);
+			$jumlah_pembiayaan = $this->Model_pembiayaan->get_pembiayaan_by_id_pembiayaan($id_pembiayaan);
 			$sisa_pembiayaan = $jumlah_pembiayaan-$total_angsuran;
 
 			if($sisa_pembiayaan == 0){
-						if($this->Model_anggota->set_lunas($id_pembiayaan))
+						if($this->Model_pembiayaan->set_lunas($id_pembiayaan))
 							return true;
 			}
 		}	
 
 	}
-
-	public function get_sisa_pembiayaan_by_id_anggota($id_anggota){
-		$this->load->model('Model_anggota');
-		$sisa_pembiayaan = $this->Model_anggota->get_sisa_pembiayaan_by_id_anggota($id_anggota);
-		return $sisa_pembiayaan;
-	}
-
 
 	
 }

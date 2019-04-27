@@ -21,6 +21,11 @@
           <div class="panel panel-default">
             <div class="panel-body">
               <div class="row">
+                <div class="pull-right col-sm-3">
+                  <input type="text" class="form-control" id="search-iuran-wajib-by-tanggal" placeholder="Cari berdasarkan tanggal">
+                </div>
+              </div>
+              <div class="row">
                 <div class="form-group ">
                   <div class="pull-right col-sm-3 ">
                     <input type="text" class="form-control" id="search-iuran-wajib" placeholder="Cari berdasarkan nama" name="no_telepon">
@@ -37,7 +42,6 @@
                       <th>Nama Lengkap</th>
                       <th>Tanggal transaksi</th>
                       <th>Jumlah</th>
-                      <th>Aksi</th>
                     </tr>
                   </thead>
                   <tbody id="table-body">
@@ -49,12 +53,6 @@
                           <td><?php echo $data_iuran['nama']?></td>
                           <td><?php echo $data_iuran['tanggal_transaksi']?></td>
                           <td class="uang"><?php echo $data_iuran['jumlah_iuran_wajib']?></td>
-                          <td>
-                            <div class="btn-group btn-group-sm">
-                              <button type="button" class="btn btn-danger hapus-iuran-wajib" id="<?php  echo $data_iuran['id_iuran_wajib']?>">
-                                <i class="fa fa-fw fa-trash-o"></i>Hapus</button>
-                            </div>
-                          </td>
                         </tr>
                     <?php 
                       $count++;

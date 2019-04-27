@@ -58,12 +58,12 @@
                         <td><?php echo $data_pembiayaan['jangka_waktu']?> bulan</td>
                         <td class="uang"><?php echo $data_pembiayaan['ijarah']?></td>
                         <td class="uang"><?php echo $data_pembiayaan['pengembalian_pokok']?></td>         
-                        <td><?php echo $data_pembiayaan['tanggal']?></td>
+                        <td><?php echo $data_pembiayaan['tanggal_pembiayaan']?></td>
                         <td><?php echo $data_pembiayaan['keterangan']?></td>
                         <td class="<?php echo ($data_pembiayaan['status_pembiayaan'] == "Belum Lunas" ? "belum-lunas":"lunas")  ?>"><?php echo $data_pembiayaan['status_pembiayaan'] ?></td>
                         <td>
                           <div class="btn-group btn-group-sm">
-                            <a href="<?php echo site_url('anggota/data_angsuran/'.$data_pembiayaan['id_pembiayaan']) ?>" class="btn btn-info">
+                            <a href="<?php echo site_url('angsuran/data_angsuran/'.$data_pembiayaan['id_pembiayaan']) ?>" class="btn btn-info">
                               <i class="fa fa-fw fa-info"></i>Lihat detail angsuran</a>
                             <button type="button" class="btn btn-danger hapus-pembiayaan" id="<?php  echo $data_pembiayaan['id_pembiayaan']?>">
                               <i class="fa fa-fw fa-trash-o"></i>Hapus</button>

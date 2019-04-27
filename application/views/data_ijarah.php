@@ -46,7 +46,7 @@
                         <tr>
                           <td><?php echo $count+1 ?></td>
                           <td><?php echo $data_ijarah['nama']?></td>
-                          <td><?php echo $data_ijarah['tanggal']?></td>
+                          <td><?php echo $data_ijarah['tanggal_transaksi']?></td>
                           <td class="uang"><?php echo $data_ijarah['jumlah']?></td>
                           
                         </tr>

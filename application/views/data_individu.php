@@ -44,7 +44,7 @@
                         </div> 
                         <div class="col-sm-5 pull-right">
                             <p><a href="<?php echo site_url('anggota/iuran_pokok/'.$anggota['id_anggota']) ?>">Detail Iuran Pokok</a></p>
-                            <p><a href="<?php echo site_url('anggota/iuran_wajib/'.$anggota['id_anggota'])?>">Detail Iuran Wajib</a></p>
+                            <p><a href="<?php echo site_url('iuran_wajib/data_iuran_wajib/'.$anggota['id_anggota'])?>">Detail Iuran Wajib</a></p>
                             
                         </div>
                     </div>
@@ -54,7 +54,7 @@
                             <p><span class="col-sm-4">Sisa Pembiayaan<span class="pull-right">:</span></span><span class="uang"><?php echo $sisa_pembiayaan?></span></p>
                         </div>
                         <div class="col-sm-5 pull-right">
-                            <p><a href="<?php echo site_url('anggota/pembiayaan/'.$anggota['id_anggota']) ?>">Detail Pembiayaan</a></p>
+                            <p><a href="<?php echo site_url('pembiayaan/data_pembiayaan/'.$anggota['id_anggota']) ?>">Detail Pembiayaan</a></p>
                         </div>     
                     </div>
                     <hr>
@@ -63,7 +63,7 @@
                             <p><span class="col-sm-4">Total Angsuran<span class="pull-right">:</span></span><span class="uang"><?php echo $total_angsuran  ?></span></p>
                         </div>
                         <div class="col-sm-5 pull-right">
-                            <p><a href="<?php echo site_url('anggota/data_angsuran/'.$pembiayaan['id_pembiayaan'])?>">Detail Angsuran</a></p>
+                            <p><a href="<?php echo site_url('angsuran/data_angsuran/'.$pembiayaan['id_pembiayaan'])?>">Detail Angsuran</a></p>
                         </div>     
                     </div>
                     
