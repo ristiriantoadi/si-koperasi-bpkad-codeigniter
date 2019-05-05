@@ -20,7 +20,7 @@
       <div class="col-sm-11">
         <div class="panel panel-default">
           <div class="panel-body">
-            <form class="form-horizontal col-sm-8" method="post" action="<?php echo site_url('proses/edit_data_master_biaya_admin')  ?>">
+            <form class="form-horizontal col-sm-8" method="post" action="<?php echo site_url('master/edit_data_master_biaya_admin')  ?>">
                     <div class="form-group">
                         <label class="control-label col-sm-3" for="nama_bidang">Biaya Administrasi:</label>
                         <div class="col-sm-9">

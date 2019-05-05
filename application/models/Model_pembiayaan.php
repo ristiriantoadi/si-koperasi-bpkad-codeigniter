@@ -66,7 +66,9 @@
         public function get_total_biaya_admin($id_anggota=null){
 
                 if($id_anggota == null){
-                        $this->db->select("(SELECT SUM(jumlah) FROM biaya_admin) AS total_biaya_admin");
+                        $this->db->select("(SELECT SUM(jumlah) FROM biaya_admin INNER JOIN
+                        anggota on anggota.id_anggota = biaya_admin.id_anggota 
+                        WHERE anggota.status='aktif' ) AS total_biaya_admin");
                         $result = $this->db->get()->row();
                         return $result->total_biaya_admin;        
                 }
@@ -147,6 +149,15 @@
         public function get_pembiayaan_by_id_pembiayaan($id_pembiayaan=null){
             $result = $this->db->get_where('pembiayaan', array('id_pembiayaan'=>$id_pembiayaan))->row();
             return $result->jumlah;       
+        }
+
+        public function get_total_pembiayaan(){
+            $this->db->from('pembiayaan');
+            $this->db->join('anggota', 'anggota.id_anggota=pembiayaan.id_anggota');
+            $this->db->where('anggota.status','aktif');
+            $this->db->select_sum('jumlah');
+            $query = $this->db->get()->row();
+            return $query->jumlah;
         }
 
         public function get_semua_pembiayaan_by_id_anggota($id_anggota=null){

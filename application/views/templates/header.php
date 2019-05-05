@@ -159,7 +159,7 @@ desired effect
             </span>
           </a>
           <ul class="treeview-menu" style="display: none;">
-            <li class="<?php echo ($halaman == 'data_anggota_aktif' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota') ?>"><i class="fa fa-fw fa-users"></i><span>Data Anggota Aktif</span></a></li>
+            <li class="<?php echo ($halaman == 'data_anggota_aktif' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/aktif') ?>"><i class="fa fa-fw fa-users"></i><span>Data Anggota Aktif</span></a></li>
             <li class="<?php echo ($halaman == 'data_anggota_non_aktif' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/nonaktif') ?>"><i class="fa fa-fw fa-users"></i><span>Data Anggota Nonaktif</span></a></li> 
             <li class="<?php echo ($halaman == 'tambah_anggota' ? 'active': '#') ?>"><a href="<?php echo site_url('anggota/tambah_anggota') ?>"><i class="fa fa-fw fa-user-plus"></i><span>Tambah Anggota</span></a></li>          
           </ul>

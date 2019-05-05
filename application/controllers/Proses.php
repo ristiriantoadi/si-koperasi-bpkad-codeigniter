@@ -211,7 +211,7 @@ class Proses extends CI_Controller {
 		//echo count($this->input->post('nama_bidang'));
 		//exit();
 		if($this->Model_master->edit_data_bidang())
-			redirect(site_url('anggota'));
+			redirect(site_url('anggota/aktif'));
 		else echo "gagal";
 	}
 

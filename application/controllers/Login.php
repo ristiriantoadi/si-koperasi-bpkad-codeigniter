@@ -5,7 +5,7 @@
         function __construct(){
             parent::__construct();
             if($this->session->userdata('admin')){
-                redirect(site_url('anggota'));
+                redirect(site_url('anggota/aktif'));
             }
         }
         public function index(){
@@ -19,7 +19,7 @@
 
             if($username == $query->username && $password == $query->password){
                 $this->session->set_userdata('admin','1');
-                redirect(site_url('anggota'));
+                redirect(site_url('anggota/aktif'));
             }
             else{
                 redirect(site_url('login?'+'0'));

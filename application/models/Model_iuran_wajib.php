@@ -110,7 +110,8 @@ class Model_iuran_wajib extends CI_Model {
                         $this->db->where('anggota.status', 'aktif');
                         */
             $total = $this->db->query("SELECT SUM(jumlah_iuran_wajib) as total_iuran_wajib 
-                    FROM iuran_wajib ")->row()->total_iuran_wajib;
+                    FROM iuran_wajib INNER JOIN anggota on iuran_wajib.id_anggota=anggota.id_anggota
+                    WHERE anggota.status='aktif' ")->row()->total_iuran_wajib;
             if(empty($total))
                 return 0;
             return $total;

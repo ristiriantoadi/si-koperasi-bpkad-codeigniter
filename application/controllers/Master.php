@@ -45,5 +45,40 @@
             $this->load->view('templates/footer');
         }
 
+        public function edit_data_master_iuran_wajib(){
+            $this->load->model('Model_master');
+            //$data
+            //$this->db->insert()
+        
+            if($this->Model_master->edit_data_master_iuran_wajib())
+                redirect(site_url('anggota/aktif'));
+            else echo "gagal";
+        }
+    
+        public function edit_data_master_biaya_admin(){
+            $this->load->model('Model_master');
+            //$data
+            //$this->db->insert()
+            /*
+            $data = array(
+                'jumlah_iuran_wajib' => str_replace(array("Rp. ","."),'',$this->input->post("jumlah_iuran_wajib"))
+            );
+            */
+            if($this->Model_master->edit_data_master_biaya_admin())
+                redirect(site_url('anggota/aktif'));
+            else echo "gagal";
+        }
+
+        public function edit_data_bidang(){
+            $this->load->model('Model_master');
+            print_r($this->input->post('nama_bidang'));
+            //echo count($this->input->post('nama_bidang'));
+            //exit();
+            if($this->Model_master->edit_data_bidang())
+                redirect(site_url('anggota/aktif'));
+            else echo "gagal";
+        }
+    
+
     }
 ?>

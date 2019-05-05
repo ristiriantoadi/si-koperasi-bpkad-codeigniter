@@ -35,6 +35,27 @@ class Model_anggota extends CI_Model {
                 }
         }
 
+        public function get_total_iuran_pokok(){
+                $this->db->where('status','aktif');
+                //$this->db->from('anggota');
+                $this->db->select_sum('iuran_pokok');
+                $query = $this->db->get('anggota')->row();
+                //print_r($query);
+                return $query->iuran_pokok;
+        
+        }
+
+        public function get_total_jumlah_anggota_aktif(){
+                $this->db->where('status', 'aktif');
+                $this->db->from('anggota');
+                return $this->db->count_all_results();
+        }
+        public function get_total_jumlah_anggota_nonaktif(){
+                $this->db->where('status', 'nonaktif');
+                $this->db->from('anggota');
+                return $this->db->count_all_results();
+        }
+
         public function get_data_anggota($id_anggota=null){
 
                 if($id_anggota==null){

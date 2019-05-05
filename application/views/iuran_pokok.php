@@ -59,7 +59,7 @@
                       endforeach; ?>
                     <tr>
                       <td colspan="3"><b>Total Jumlah</b></td>
-                      <td class="uang"><?php echo $count*500000 ?></td>
+                      <td class="uang"><?php echo $total_iuran_pokok ?></td>
                     </tr> 
                   </tbody>
                 </table>

@@ -50,19 +50,27 @@
 
         public function get_total_ijarah($id_anggota=null){
                 if($id_anggota == null){
-                        $this->db->select("(SELECT SUM(jumlah) FROM ijarah) AS total_angsuran");
+                        $this->db->from('ijarah');
+                        $this->db->join('anggota', 'anggota.id_anggota = ijarah.id_anggota');
+                        $this->db->where('anggota.status','aktif');
+                        $this->db->select_sum('jumlah');
+                        //$this->db->select("(SELECT SUM(jumlah) FROM ijarah) AS total_angsuran ");
                         $result = $this->db->get()->row();
-                        return $result->total_angsuran;        
+                        return $result->jumlah;        
                 }
+                /*
                 $this->db->join('anggota', 'ijarah.id = anggota.id');
                 $this->db->select("(SELECT SUM(jumlah) FROM ijarah WHERE id_anggota=$id_anggota) AS total_angsuran");
                 $this->db->select_sum('jumlah');
                 return $result->total_angsuran;
+                */
         }
 
         public function get_total_ijarah_by_keyword($cari=null){
             if($cari == null){
-                    $this->db->select("(SELECT SUM(jumlah) FROM ijarah) AS total_angsuran");
+                    $this->db->select("(SELECT SUM(jumlah) FROM ijarah INNER JOIN anggota
+                    ON anggota.id_anggota = ijarah.id_anggota 
+                    WHERE anggota.status='aktif') AS total_angsuran");
                     $result = $this->db->get()->row();
                     return $result->total_angsuran;        
             }

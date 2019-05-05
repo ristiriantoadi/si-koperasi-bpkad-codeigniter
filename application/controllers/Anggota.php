@@ -29,6 +29,31 @@ class Anggota extends CI_Controller {
 	public function index()//data keseluruhan semua anggota aktif koperasi BPKAD
 	{
 		$this->load->model('Model_anggota');
+		$this->load->model('Model_iuran_wajib');
+		$this->load->model('Model_pembiayaan');
+		$this->load->model('Model_angsuran');
+		
+		$data = array(
+			'halaman' => 'beranda',
+			//'anggota'=> $this->Model_anggota->get_data_anggota()
+			'jumlah_anggota_aktif'=> $this->Model_anggota->get_total_jumlah_anggota_aktif(),
+			'jumlah_anggota_nonaktif' => $this->Model_anggota->get_total_jumlah_anggota_nonaktif(),
+			'jumlah_iuran_wajib' => $this->Model_iuran_wajib->get_total_iuran_wajib(),
+			'jumlah_iuran_pokok' => $this->Model_anggota->get_total_iuran_pokok(),
+			'jumlah_pembiayaan' => $this->Model_pembiayaan->get_total_pembiayaan(),
+			'jumlah_ijarah' => $this->Model_angsuran->get_total_ijarah(),
+			'jumlah_biaya_administrasi' => $this->Model_pembiayaan->get_total_biaya_admin()
+		);
+		//print_r($data);
+		//exit();
+
+		$this->load->view('templates/header', $data);
+		$this->load->view('beranda', $data);
+		$this->load->view('templates/footer');
+	}
+
+	public function aktif(){//data keseluruhan anggota aktif koperasi BPKAD
+		$this->load->model('Model_anggota');
 		$data = array(
 			'halaman' => 'data_anggota_aktif',
 			'anggota'=> $this->Model_anggota->get_data_anggota()
@@ -39,6 +64,15 @@ class Anggota extends CI_Controller {
 		$this->load->view('templates/footer');
 	}
 
+	/*
+	public function get_total_jumlah_anggota_aktif(){
+		$this->load->model('Model_anggota');
+		echo $this->Model_anggota->get_total_jumlah_anggota_aktif();
+		exit();
+	}
+	*/
+
+	
 	public function nonaktif(){//data keseluruhan anggota nonaktif BPKAD
 		$this->load->model('Model_anggota');
 		$data = array(
@@ -134,7 +168,7 @@ class Anggota extends CI_Controller {
 		if($this->Model_anggota->tambah_anggota()){
 			//echo "sukses";
 			$this->load->helper('url'); 
-			redirect(site_url('anggota'));
+			redirect(site_url('anggota/aktif'));
 		}
 		else echo "gagal";
 
@@ -192,7 +226,8 @@ class Anggota extends CI_Controller {
 		
 		$data = array(
 			'halaman' => 'iuran_pokok',
-			'iuran_pokok' => $this->Model_anggota->get_data_iuran_pokok($id_anggota)
+			'iuran_pokok' => $this->Model_anggota->get_data_iuran_pokok($id_anggota),
+			'total_iuran_pokok'=> $this->Model_anggota->get_total_iuran_pokok()
 		);
 		
 		/*
