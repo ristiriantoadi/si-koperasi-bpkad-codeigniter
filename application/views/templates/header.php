@@ -112,23 +112,24 @@ desired effect
           <!-- User Account Menu -->
           <li class="dropdown user user-menu">
             <!-- Menu Toggle Button -->
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <a href="<?php echo site_url("anggota/logout") ?>" >
               <!-- The user image in the navbar-->
-              <img src="<?php echo base_url('assets/dist/img/user2-160x160.jpg') ?>" class="user-image" alt="User Image">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
-              <span class="hidden-xs">Admin</span>
+              <span class="hidden-xs">Logout</span>
             </a>
+            <!--
             <ul class="dropdown-menu">
-              <!-- Menu Footer-->
+              Menu Footer
               <li class="user-footer">
                 <div class="pull-right">
-                  <a href="<?php echo site_url('anggota/logout') ?>" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="<?php echo site_url('anggota/logout') ?>" class="btn btn-default btn-flat">Logout</a>
                 </div>
               </li>
             </ul>
           </li>
           
         </ul>
+        -->
       </div>
     </nav>
   </header>
@@ -139,10 +140,7 @@ desired effect
     <section class="sidebar">
 
       <!-- Sidebar user panel (optional) -->
-      <div class="user-panel">
-        <div class="pull-left image">
-          <img src="<?php echo base_url('assets/dist/img/user2-160x160.jpg') ?>" class="img-circle" alt="User Image">
-        </div>
+      <div class="user-panel" style="height:50px">
         <div class="pull-left info">
           <p style="font-size:23px;text-align:center">Admin</p>
         </div>

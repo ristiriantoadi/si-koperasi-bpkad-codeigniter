@@ -39,11 +39,18 @@
               </div>
               <div class="form-group">
                 <label class="control-label col-sm-3" for="tempat_tanggal_lahir">Tempat, tanggal lahir:</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" id="tempat-tanggal-lahir" placeholder="Isi tempat dan tanggal lahir" name="tempat_tanggal_lahir" required
-                  oninvalid="this.setCustomValidity('Isi tempat dan tanggal lahir')"
-    oninput="this.setCustomValidity('')">
-                </div>
+                  <div class="col-sm-9">
+                    <div class="col-sm-6" style="padding-left: 0"> 
+                      <input type="text" class="form-control" id="tempat-tanggal-lahir" placeholder="Isi tempat kelahiran" name="tempat_lahir" required
+                        oninvalid="this.setCustomValidity('Isi tempat dan tanggal lahir')"
+          oninput="this.setCustomValidity('')">
+                    </div>
+                    <div class="col-sm-6" style="padding-right: 0"> 
+                      <input type="date" class="form-control col-sm-6" id="tanggal" name="tanggal_lahir" required
+                          oninvalid="this.setCustomValidity('Pilih tanggal')"
+        oninput="this.setCustomValidity('')" >
+                    </div>
+                  </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-sm-3" for="no_telepon">No telepon:</label>

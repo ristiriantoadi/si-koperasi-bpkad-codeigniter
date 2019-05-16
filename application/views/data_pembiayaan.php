@@ -23,11 +23,10 @@
               <div class="row">
                 <div class="form-group ">
                   <div class="pull-right col-sm-3 ">
+                    <label>Pencarian:</label>
                     <input type="text" class="form-control" id="search-pembiayaan" placeholder="Cari berdasarkan nama atau id" name="no_telepon">
                   </div>
-                  
                 </div>
-                
               </div>
               <div class="row">
                 <table class="table table-bordered" id="table_id">

@@ -23,6 +23,7 @@
               <div class="row">
                 <div class="form-group ">
                   <div class="pull-right col-sm-3 ">
+                    <label>Pencarian berdasarkan nama:</label>
                     <input type="text" class="form-control" id="search-ijarah" placeholder="Cari berdasarkan nama" name="no_telepon">
                   </div>                  
                 </div>

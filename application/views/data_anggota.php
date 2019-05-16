@@ -21,11 +21,11 @@
           <div class="panel panel-default">
             <div class="panel-body">
               <div class="row">
-                <div class="form-group ">
+                <div class="form-group">
                   <div class="pull-right col-sm-3 ">
+                    <label>Pencarian:</label>
                     <input type="text" class="form-control" id="search-aktif" placeholder="Cari berdasarkan nama atau id" name="no_telepon">
                   </div>
-                  
                 </div>
                 
               </div>

@@ -183,10 +183,103 @@ class Anggota extends CI_Controller {
 			'anggota'=> $this->Model_anggota->get_data_anggota($id_anggota),
 			'bidang' => $this->Model_anggota->get_data_bidang()
 		);
+		
+		//parse tempat_tanggal_lahir into tempat_lahir and tanggal_lahir
+		$tempat_tanggal_lahir = explode(", ",$data['anggota']['tempat_tanggal_lahir']);
+		$tempat_lahir = $tempat_tanggal_lahir[0];
+		$tanggal_lahir = $tempat_tanggal_lahir[1];
+
+		//put tempat_lahir into data
+		$data['tempat_lahir'] = $tempat_lahir;
+
+		//parse tanggal_lahir into numeric form
+		$tanggal_lahir = $this->parseStringToDate($tanggal_lahir);
+
+		//put tanggal_lahir into data
+		$data['tanggal_lahir']=$tanggal_lahir;
+		//exit();
+
+
 		$this->load->view('templates/header', $data);
 		$this->load->view('edit_anggota', $data);
 		$this->load->view('templates/footer');
 	}
+
+	public function proses_edit_anggota(){
+		$this->load->model('Model_anggota');
+		//echo $this->input->post('id-anggota');
+		//exit();
+		if($this->Model_anggota->edit_anggota()){
+			//echo "sukses";
+			$this->load->helper('url'); 
+			redirect(site_url('anggota/data/'.$this->input->post('id_anggota')));
+		}
+		else echo "gagal";
+
+	}
+
+	public function parseStringToDate($string){
+		//parse the string into day month year
+		$string = explode(" ",$string);		
+		$day = $string[0];
+		$month = $string[1];
+		$year = $string[2];
+
+		//turn the month into number
+		switch($month){
+			case 'Januari':
+				$month = 1;
+				break;
+			case 'Februari':
+				$month = 2;
+				break;
+			case 'Maret':
+				$month = 3;
+				break;
+				case 'April':
+				$month = 4;
+				break;
+			case 'Mei':
+				$month = 5;
+				break;
+			case 'Juni':
+				$month = 6;
+				break;
+			case 'Juli':
+				$month = 7;
+				break;
+			case 'Agustus':
+				$month = 8;
+				break;
+			case 'September':
+				$month = 9;
+				break;
+				case 'Oktober':
+				$month = 10;
+				break;
+			case 'November':
+				$month = 11;
+				break;
+			case 'Desember':
+				$month = 12;
+				break;
+		}
+		//echo $month;
+		//append
+		
+		//add leading zero
+		$year = sprintf('%04d', $year);
+		$month = sprintf('%02d', $month);
+		$day = sprintf('%02d', $day);
+		
+		
+		$tanggal_lahir = $year."-".$month."-".$day;
+		//echo $tanggal_lahir;
+ 		//print_r($string);
+		//exit();
+		return $tanggal_lahir;
+	}
+
 	
 	public function cari_iuran_pokok_by_date($tanggal_awal, $tanggal_akhir){
 		$this->load->model('Model_anggota');

@@ -51,14 +51,16 @@
       <div class="row">
         <!-- /.col -->
         <div class="col-xs-4 pull-right">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Login</button>
         </div>
         <!-- /.col -->
       </div>
+      <!--
       <div style="margin-top:30px">
           <p style="text-align:center">Username: admin</p>
           <p style="text-align:center">Password: admin</p>
       </div>
+      -->
     </form>
   </div>
   <!-- /.login-box-body -->

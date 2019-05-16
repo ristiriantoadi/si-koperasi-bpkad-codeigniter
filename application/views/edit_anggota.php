@@ -20,7 +20,7 @@
       <div class="col-sm-11">
         <div class="panel panel-default">
           <div class="panel-body">
-            <form class="form-horizontal col-sm-8" method="post" action="<?php echo site_url('proses/edit_anggota')  ?>">
+            <form class="form-horizontal col-sm-8" method="post" action="<?php echo site_url('anggota/proses_edit_anggota')  ?>">
               <div class="form-group">
                 <label class="control-label col-sm-3" for="id_anggota">Id Anggota:</label>
                 <div class="col-sm-9">
@@ -37,10 +37,18 @@
               </div>
               <div class="form-group">
                 <label class="control-label col-sm-3" for="tempat_tanggal_lahir">Tempat, tanggal lahir:</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" id="tempat-tanggal-lahir" placeholder="Isi tempat dan tanggal lahir" name="tempat_tanggal_lahir" 
-                  value="<?php echo $anggota['tempat_tanggal_lahir'] ?>"required>
-                </div>
+                  <div class="col-sm-9">
+                    <div class="col-sm-6" style="padding-left: 0"> 
+                      <input type="text" class="form-control" value="<?php echo $tempat_lahir ?>" id="tempat-tanggal-lahir" placeholder="Isi tempat kelahiran" name="tempat_lahir" required
+                        oninvalid="this.setCustomValidity('Isi tempat dan tanggal lahir')"
+          oninput="this.setCustomValidity('')">
+                    </div>
+                    <div class="col-sm-6" style="padding-right: 0"> 
+                      <input type="date" class="form-control col-sm-6" id="tanggal" name="tanggal_lahir" required
+                          oninvalid="this.setCustomValidity('Pilih tanggal')" value="<?php echo $tanggal_lahir ?>"
+        oninput="this.setCustomValidity('')" >
+                    </div>
+                  </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-sm-3" for="no_telepon">No telepon:</label>

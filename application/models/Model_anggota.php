@@ -3,14 +3,19 @@ class Model_anggota extends CI_Model {
 
         public function tambah_anggota(){
                 $this->load->model('Model_iuran_wajib');
-                $tanggal = date('y-m-d', strtotime($this->input->post('tanggal')));        
+                $tanggal = date('y-m-d', strtotime($this->input->post('tanggal')));      
+                $tanggal_lahir = $this->parseDateToString($this->input->post('tanggal_lahir'));  
+                $tempat_lahir = $this->input->post('tempat_lahir');
+                $tempat_tanggal_lahir = $tempat_lahir.", ".$tanggal_lahir;
+                //echo $tempat_tanggal_lahir;
+                //exit();
 
                 $data = array(
                         'id_anggota' => $this->input->post('id_anggota'),
                         'nama' => $this->input->post('nama'),
                         'no_telepon' => $this->input->post('no_telepon'),
                         'no_ktp' => $this->input->post('no_ktp'),
-                        'tempat_tanggal_lahir' => $this->input->post('tempat_tanggal_lahir'),     
+                        'tempat_tanggal_lahir' => $tempat_tanggal_lahir,     
                         'id_bidang' => $this->input->post('bidang'),
                         'alamat' => $this->input->post('alamat'),
                         'tanggal' => $tanggal,
@@ -22,6 +27,68 @@ class Model_anggota extends CI_Model {
                     return false;
 
                 return $this->db->insert('anggota', $data);    
+        }
+
+        public function parseDateToString($tanggal){
+                
+                //split the string
+                $tanggal = explode("-",$tanggal);
+                print_r($tanggal);
+
+                //parse the year
+                $tahun = $tanggal[0];
+
+                //parse the month
+                $bulan = $tanggal[1];
+                switch($bulan){
+                        case 1:
+                                $bulan = "Januari";
+                                break;
+                        case 2:
+                                $bulan = "Februari";
+                                break;
+                        case 3:
+                                $bulan = "Maret";
+                                break;
+                        case 4: 
+                                $bulan = "April";
+                                break;
+                        case 5:
+                                $bulan = "Mei";
+                                break;
+                        case 6:
+                                $bulan = "Juni";
+                                break;
+                        case 7:
+                                $bulan = "Juli";
+                                break;
+                        case 8:
+                                $bulan = "Agustus";
+                                break;
+                        case 9:
+                                $bulan = "September";
+                                break;
+                        case 10:
+                                $bulan = "Oktober";
+                                break;
+                        case 11:
+                                $bulan = "November";
+                                break;
+                        case 12:
+                                $bulan = "Desember";
+                                break;
+
+                }
+                
+                //parse the day
+                $tanggal = ltrim($tanggal[2],'0');
+
+                //gabungkan
+                $tanggal_lahir = $tanggal." ".$bulan." ".$tahun;
+                //echo $tanggal_lahir;
+                return $tanggal_lahir;
+
+                //exit();
         }
 
         public function get_data_iuran_pokok($id_anggota=null){
@@ -201,12 +268,17 @@ class Model_anggota extends CI_Model {
 
 
         public function edit_anggota(){
+                //$tempat_tanggal_lahir = $this->input->post('tempat_tanggal_lahir');
+                $tanggal_lahir = $this->parseDateToString($this->input->post('tanggal_lahir'));  
+                $tempat_lahir = $this->input->post('tempat_lahir');
+                $tempat_tanggal_lahir = $tempat_lahir.", ".$tanggal_lahir;
+        
                 $data = array(
                         'id_anggota' => $this->input->post('id_anggota'),
                         'nama' => $this->input->post('nama'),
                         'no_telepon' => $this->input->post('no_telepon'),
                         'no_ktp' => $this->input->post('no_ktp'),
-                        'tempat_tanggal_lahir' => $this->input->post('tempat_tanggal_lahir'),
+                        'tempat_tanggal_lahir' => $tempat_tanggal_lahir,
                         'id_bidang' => $this->input->post('bidang'),
                         'alamat' => $this->input->post('alamat'),
                         'tanggal' => $this->input->post('tanggal'),
