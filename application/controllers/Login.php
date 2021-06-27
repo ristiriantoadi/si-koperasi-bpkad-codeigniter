@@ -9,7 +9,7 @@
             }
         }
         public function index(){
-            $this->load->view('Login');
+            $this->load->view('login');
         }
         
         public function autentikasi(){

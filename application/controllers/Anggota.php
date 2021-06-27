@@ -362,7 +362,8 @@ class Anggota extends CI_Controller {
 	public function nonaktifkan_anggota($id_anggota){
 		$this->load->model('Model_anggota');
 		if($this->Model_anggota->nonaktifkan_anggota($id_anggota)){
-			//echo "sukses";
+			// echo "sukses";
+			// exit();
 			$data = $this->Model_anggota->get_data_anggota();
 			$text="";
 			foreach ($data as $data_anggota):
